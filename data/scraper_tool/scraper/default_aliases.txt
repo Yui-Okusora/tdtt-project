@@ -1,0 +1,79 @@
+# Bảng đồng nghĩa dựng sẵn. Mỗi dòng là một nhóm các cụm từ TƯƠNG ĐƯƠNG NHAU (hai chiều).
+# Phần tử đầu tiên là từ chuẩn, dùng để gửi cho search engine.
+# Không phân biệt hoa/thường và dấu tiếng Việt. Muốn thêm: dùng file aliases.txt (xem README).
+
+# --- phong cách / thời trang ---
+fashion = thời trang, style, outfit, ootd, clothing, apparel
+casual = thường ngày, đời thường, everyday, relaxed, daily wear
+formal = trang trọng, lịch sự, elegant, business attire
+streetwear = street style, thời trang đường phố
+vintage = cổ điển, retro, old school
+minimalist = tối giản, minimal, minimalism
+dress = đầm, váy, gown, đầm váy
+jacket = áo khoác, coat, outerwear
+shirt = áo sơ mi, t-shirt, tshirt, áo thun
+shoes = giày, sneakers, sneaker, footwear
+bag = túi, túi xách, handbag, purse
+hat = mũ, nón, cap
+glasses = kính, sunglasses, eyewear
+wedding = đám cưới, bridal, bride
+
+# --- meme / hài ---
+meme = memes, ảnh chế, troll, reaction image
+funny = hài hước, vui nhộn, humor, comedy
+
+# --- tư thế / khung hình ---
+pose = tạo dáng, posing, posture
+portrait = chân dung, headshot, portraits
+selfie = tự sướng, self portrait
+full body = toàn thân, full length, head to toe
+close up = cận cảnh, closeup, macro
+standing = đứng, stand
+sitting = ngồi, seated, sit
+walking = đi bộ, walk, stroll
+running = chạy, run, jogging, jog
+smile = nụ cười, smiling, cười
+dance = nhảy, múa, dancing, dancer
+black and white = đen trắng, monochrome, grayscale, b&w
+
+# --- số người / đối tượng ---
+1 person = 1 people, 1 persons, one person, single person, solo, alone, 1 người, một người, individual
+2 person = 2 people, two people, two persons, 2 người, hai người, couple, duo, pair
+3 person = 3 people, three people, 3 người, ba người, trio
+group = nhóm, crowd, team, friends, nhiều người
+man = men, male, đàn ông, nam, guy, gentleman
+woman = women, female, phụ nữ, nữ, lady
+boy = con trai, bé trai, lad
+girl = con gái, bé gái
+child = children, kid, kids, trẻ em, toddler
+baby = em bé, infant, newborn, trẻ sơ sinh
+
+# --- bối cảnh ---
+street = đường phố, streets, road
+city = thành phố, cityscape, skyline
+night = ban đêm, đêm, nighttime
+sunset = hoàng hôn, dusk, sundown
+sunrise = bình minh, dawn
+beach = bãi biển, biển, seaside, coast
+mountain = núi, mountains
+forest = rừng, woods
+nature = thiên nhiên, natural
+landscape = phong cảnh, scenery, cảnh quan
+flower = hoa, flowers, floral, blossom
+indoor = trong nhà, interior
+outdoor = ngoài trời, outside
+background = nền, backdrop
+texture = họa tiết, pattern
+
+# --- chủ đề khác ---
+travel = du lịch, trip, tourism, vacation
+food = đồ ăn, thức ăn, món ăn, cuisine, meal
+coffee = cà phê, cafe
+cat = mèo, kitten, cats
+dog = chó, puppy, dogs
+car = xe hơi, ô tô, automobile, vehicle
+motorbike = xe máy, motorcycle, scooter
+anime = manga
+cartoon = hoạt hình, animation, animated
+sport = thể thao, sports, athletic
+gym = phòng gym, fitness, workout
