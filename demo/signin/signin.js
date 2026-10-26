@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('Đăng ký tài khoản thành công! Vui lòng đăng nhập.');
 
     // dua ve trang dang nhap de dang nhap
-    window.location.href = 'login.html';
+    window.location.href = '../login/login.html';
   });
 
 });

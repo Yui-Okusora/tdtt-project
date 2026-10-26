@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('loggedInUser', usernameValue);
 
     // chuyen huong sang trang trang
-    window.location.href = 'blank.html';
+    window.location.href = '../trangchu/blank.html';
   });
 
 });
