@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fbf7f4" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="PoseLab" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+  <meta name="description" content="PoseLab — tạo dáng, chụp ảnh và lưu bộ ảnh yêu thích." />
+  <title>PoseLab | Your photo, your moment</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+  <script src="pwa.js" defer></script>
+</head>
+<body>
+  <!-- DEMO LOGIN: Đây là giao diện mẫu, KHÔNG xác thực với máy chủ. -->
+  <section class="login-view" id="loginView" aria-labelledby="loginHeading">
+    <div class="login-showcase">
+      <div class="login-brand"><span class="brand-mark">✳</span><span>Pose<span class="brand-period">Lab</span></span></div>
+      <div class="showcase-inner">
+        <p class="eyebrow light">MAKE EVERY MOMENT YOURS</p>
+        <h1>Đẹp theo cách<br /><em>của bạn.</em></h1>
+        <p>Chọn tư thế, lưu cảm hứng và biến mỗi khung hình thành một kỷ niệm riêng.</p>
+        <div class="showcase-art" aria-hidden="true">
+          <div class="showcase-orbit orbit-1"></div><div class="showcase-orbit orbit-2"></div>
+          <div class="showcase-photo photo-a"><div class="showcase-person person-a"></div></div>
+          <div class="showcase-photo photo-b"><div class="showcase-person person-b"></div></div>
+          <span class="showcase-sticker">good vibes only ✦</span>
+        </div>
+      </div>
+      <span class="showcase-footer">CAPTURE • CREATE • KEEP</span>
+    </div>
+    <div class="login-panel">
+      <div class="login-form-wrap">
+        <span class="login-kicker">WELCOME TO POSELAB ✦</span>
+        <h2 id="loginHeading">Bắt đầu câu chuyện<br />trong khung hình.</h2>
+        <p class="muted login-intro">Đăng nhập để trải nghiệm không gian chụp ảnh của bạn.</p>
+        <form id="loginForm" class="login-form">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="tenban@example.com" autocomplete="email" required />
+          <label for="password">Mật khẩu</label>
+          <input id="password" name="password" type="password" placeholder="Từ 6 ký tự" autocomplete="current-password" minlength="6" required />
+          <button class="btn btn-primary btn-large" type="submit">Vào studio <span aria-hidden="true">↗</span></button>
+        </form>
+        <div class="login-divider"><span>hoặc</span></div>
+        <button class="btn btn-outline btn-large" id="guestBtn" type="button">Trải nghiệm với tư cách khách</button>
+        <div class="account-links"><button id="registerBtn" type="button">Đăng ký</button><button id="resetPasswordBtn" type="button">Quên mật khẩu?</button></div><p class="demo-note">Bản demo giao diện: không có tài khoản thật hay máy chủ xác thực. Mật khẩu không được lưu hoặc gửi đi.</p>
+      </div>
+      <div class="login-panel-footer">Designed for your little moments <span>✳</span></div>
+    </div>
+  </section>
+
+  <div id="workspace" class="workspace" hidden>
+    <aside class="sidebar" aria-label="Điều hướng chính">
+      <a href="#home" class="workspace-brand" id="brandLink" aria-label="PoseFrame - Trang chủ"><span class="brand-mark">✳</span><span class="brand-name">Pose<span class="brand-period">Lab</span></span></a>
+      <p class="sidebar-label">WORKSPACE</p>
+      <nav id="mainNav" class="main-nav">
+        <button type="button" data-page="home" class="nav-item"><span class="nav-icon">⌂</span><span>Trang chủ</span></button>
+        <button type="button" data-page="poses" class="nav-item"><span class="nav-icon">▦</span><span>Kho tư thế</span></button>
+        <button type="button" data-page="capture" class="nav-item"><span class="nav-icon">◎</span><span>Chụp & tải ảnh</span></button>
+        <button type="button" data-page="library" class="nav-item"><span class="nav-icon">▧</span><span>Thư viện</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-promo"><div class="mini-promo-star">✳</div><strong>Bắt trọn khoảnh khắc</strong><p>Không cần biết tạo dáng, PoseLab đã có gợi ý cho bạn.</p></div>
+        <div class="profile"><div class="avatar" id="avatar">K</div><div class="profile-text"><strong id="profileName">Khách</strong><span>Creative member</span></div><button id="logoutBtn" class="icon-btn" type="button" aria-label="Thoát studio" title="Thoát studio">↪</button></div>
+      </div>
+    </aside>
+    <div class="workspace-body">
+      <header class="topbar"><div class="breadcrumb"><span>YOUR STUDIO</span><span class="breadcrumb-slash">/</span><strong id="pageLabel">Trang chủ</strong></div><div class="top-actions"><button type="button" class="install-app-btn" id="installAppBtn" hidden aria-label="Cài PoseLab lên điện thoại">↓ Cài app</button><span id="networkStatus" class="network-status" role="status" hidden>Offline</span><span class="top-date" id="todayDate"></span><span class="top-dot">✦</span></div></header>
+      <div id="pwaUpdateBanner" class="pwa-update-banner" role="status" hidden><span>Có phiên bản PoseLab mới.</span><button id="pwaUpdateBtn" type="button">Cập nhật</button><button id="pwaDismissBtn" type="button" aria-label="Bỏ qua thông báo">×</button></div>
+      <main id="main" class="main-content" tabindex="-1" aria-live="off"></main>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="modalRoot"></div>
+  <input id="photoInput" class="sr-only" type="file" accept="image/*" aria-label="Chọn ảnh để tải lên" />
+</body>
+</html>
