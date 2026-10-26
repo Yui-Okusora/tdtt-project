@@ -18,6 +18,11 @@ class Engine:
         self.http = http
         self.safesearch = safesearch
 
+    def _get(self, url: str, **kw):
+        """Request tới search engine: retry ít để báo bị chặn nhanh thay vì chờ backoff lâu."""
+        kw.setdefault("retries", 1)
+        return self.http.get(url, **kw)
+
     def search(self, query: str) -> Iterator[list[Candidate]]:
         raise NotImplementedError
 
@@ -36,13 +41,15 @@ class BingEngine(Engine):
                 params["adlt"] = "off"
             elif self.safesearch == "strict":
                 params["adlt"] = "strict"
-            r = self.http.get(
+            r = self._get(
                 self.URL, params=params, referer="https://www.bing.com/images/search",
                 scale=2.0,
             )
             soup = BeautifulSoup(r.text, "html.parser")
             items: list[Candidate] = []
             anchors = soup.select("a.iusc")
+            if not anchors and any(k in r.text.lower() for k in ("captcha", "unusual traffic", "are you a robot")):
+                raise Blocked("Bing yêu cầu captcha")
             for a in anchors:
                 try:
                     m = json.loads(a.get("m", "{}"))
@@ -73,7 +80,7 @@ class DuckDuckGoEngine(Engine):
     name = "duckduckgo"
 
     def _vqd(self, query: str) -> str:
-        r = self.http.get(
+        r = self._get(
             "https://duckduckgo.com/", params={"q": query, "iax": "images", "ia": "images"},
             scale=2.0,
         )
@@ -90,7 +97,7 @@ class DuckDuckGoEngine(Engine):
                 "l": "us-en", "o": "json", "q": query, "vqd": vqd, "f": ",,,,,",
                 "p": "-1" if self.safesearch == "off" else "1", "s": offset,
             }
-            r = self.http.get(
+            r = self._get(
                 "https://duckduckgo.com/i.js", params=params, kind="json",
                 referer="https://duckduckgo.com/", scale=2.0,
             )
@@ -136,7 +143,7 @@ class GoogleEngine(Engine):
                 params["safe"] = "off"
             elif self.safesearch == "strict":
                 params["safe"] = "active"
-            r = self.http.get("https://www.google.com/search", params=params, scale=3.0)
+            r = self._get("https://www.google.com/search", params=params, scale=3.0)
             if "/sorry/" in r.url or "unusual traffic" in r.text[:20000].lower():
                 raise Blocked("Google yêu cầu captcha")
             items: list[Candidate] = []
@@ -162,8 +169,23 @@ class GoogleEngine(Engine):
             yield items
 
 
+# -------------------------------------------------------------------- Reddit
+class RedditEngine(Engine):
+    """Tìm bài đăng theo từ khoá trên toàn Reddit; tiêu đề bài đăng làm caption cho ảnh."""
+    name = "reddit"
+
+    def search(self, query: str) -> Iterator[list[Candidate]]:
+        from .reddit import fetch_pages
+        yield from fetch_pages(
+            self.http, "https://www.reddit.com/search.json",
+            {"q": query, "type": "link", "sort": "relevance", "t": "all"},
+            max_pages=5, allow_nsfw=self.safesearch == "off", engine=self.name,
+        )
+
+
 ENGINES = {
     "bing": BingEngine,
     "duckduckgo": DuckDuckGoEngine,
     "google": GoogleEngine,
+    "reddit": RedditEngine,
 }

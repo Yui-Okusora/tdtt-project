@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 FIELDS = [
-    "id", "filename", "path", "category", "tags", "match", "matched_tags", "keywords", "image_url", "source_page",
+    "id", "filename", "path", "category", "tags", "match", "matched_tags", "clip_scores", "keywords", "image_url", "source_page",
     "title", "alt_text", "engine", "width", "height", "format", "bytes",
     "md5", "phash", "scraped_at",
 ]
@@ -63,6 +63,11 @@ class Store:
                 return len(self.records)
             return sum(1 for r in self.records if r["category"] == category)
 
+    def is_dup(self, md5: str, phash: int) -> bool:
+        """Kiểm tra trùng nhanh (không ghi) để khỏi tốn công chấm điểm CLIP cho ảnh đã có."""
+        with self.lock:
+            return md5 in self.md5s or any((h ^ phash).bit_count() <= self.threshold for h in self.phashes)
+
     # ------------------------------------------------------------------ commit
     def commit(self, *, data: bytes, ext: str, md5: str, phash: int, meta: dict) -> tuple[dict | None, str]:
         """Ghi ảnh nếu không trùng. Trả về (record, "") hoặc (None, lý do)."""
@@ -91,6 +96,7 @@ class Store:
                 "tags": list(meta.get("tags", [])),
                 "match": meta.get("match", "full"),
                 "matched_tags": list(meta.get("matched_tags", meta.get("tags", []))),
+                "clip_scores": dict(meta.get("clip_scores") or {}),
                 "keywords": meta["keywords"],
                 "image_url": meta["image_url"],
                 "source_page": meta.get("source_page", ""),
@@ -127,5 +133,6 @@ class Store:
                     row = dict(r)
                     row["tags"] = "|".join(r.get("tags", []))
                     row["matched_tags"] = "|".join(r.get("matched_tags", r.get("tags", [])))
+                    row["clip_scores"] = "|".join(f"{k}={v}" for k, v in (r.get("clip_scores") or {}).items())
                     w.writerow(row)
             self._unsaved = 0
