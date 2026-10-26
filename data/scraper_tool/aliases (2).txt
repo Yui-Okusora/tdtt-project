@@ -1,0 +1,7 @@
+# File đồng nghĩa của BẠN (tự nạp nếu nằm cạnh main.py hoặc trong thư mục đang chạy; hoặc --aliases đường_dẫn).
+# Mỗi dòng một nhóm cụm từ tương đương nhau (hai chiều). Từ đầu tiên là từ chuẩn dùng để tìm kiếm.
+# Dòng bắt đầu bằng # là ghi chú. Nhóm trùng cụm với bảng dựng sẵn sẽ được GỘP vào nhóm đó.
+#
+# Ví dụ (bỏ dấu # để dùng):
+# fashion = outfit đẹp, lookbook          <- thêm vào nhóm fashion có sẵn
+# product photo = ảnh sản phẩm, packshot, catalog image
