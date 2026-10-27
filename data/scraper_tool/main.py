@@ -56,9 +56,26 @@ def build_parser() -> argparse.ArgumentParser:
                    help="link trang/ảnh để cào. 'url' = dùng cho mọi kế hoạch; "
                         "'N::url' = chỉ cho kế hoạch số N")
     p.add_argument("-o", "--out", help="thư mục đầu ra (mặc định: output)")
-    p.add_argument("--match", choices=["strict", "loose"], default="strict",
-                   help="strict: kiểm tra mọi tag có trong tiêu đề/alt/URL của ảnh (mặc định); "
-                        "loose: chỉ dùng tag làm câu truy vấn search, không kiểm tra lại")
+    p.add_argument("--match", choices=["auto", "strict", "loose"], default="auto",
+                   help="auto (mặc định): có CLIP thì CLIP kiểm tra nội dung ảnh, không có thì kiểm tra chữ; "
+                        "strict: mọi tag phải có trong tiêu đề/alt/URL; "
+                        "loose: không kiểm tra chữ (chỉ dựa vào câu tìm kiếm và CLIP)")
+    p.add_argument("--clip", choices=["auto", "on", "off"], default="auto",
+                   help="lọc ảnh rác bằng CLIP chạy local: auto = dùng nếu đã cài (pip install -r requirements-clip.txt), "
+                        "on = bắt buộc, off = tắt")
+    p.add_argument("--clip-model", default="openai/clip-vit-base-patch32", help="model CLIP (Hugging Face)")
+    p.add_argument("--clip-threshold", type=float, default=0.22,
+                   help="ngưỡng cosine ảnh-tag để coi là khớp (mặc định 0.22; thấp = dễ tính, cao = khắt khe). "
+                        "Điểm từng ảnh được lưu ở cột clip_scores để bạn chỉnh ngưỡng")
+    p.add_argument("--no-clip-junk", action="store_true",
+                   help="tắt lọc 'ảnh rác' (logo/banner/ảnh chụp màn hình) của CLIP, vd. khi cào meme có chữ")
+    p.add_argument("--max-aspect", type=float, default=4.0,
+                   help="bỏ ảnh có tỉ lệ cạnh dài/ngắn lớn hơn mức này (banner), mặc định 4")
+    p.add_argument("--time-limit", type=int, default=900,
+                   help="giới hạn thời gian (giây) cho MỖI kế hoạch, 0 = không giới hạn (mặc định 900)")
+    p.add_argument("--cookies", metavar="FILE",
+                   help="file cookie xuất từ trình duyệt đã đăng nhập (cookies.txt Netscape hoặc JSON) "
+                        "để vào Reddit/diễn đàn cần đăng nhập và giảm bị chặn")
     p.add_argument("--aliases", action="append", default=[], metavar="FILE",
                    help="file đồng nghĩa của bạn (xem aliases.txt); có thể lặp. "
                         "Tự nạp aliases.txt cạnh main.py hoặc ở thư mục hiện tại")
@@ -70,8 +87,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="tắt bước tách lẻ tag; chỉ nhận ảnh khớp TẤT CẢ tag (có thể ít ảnh hơn số yêu cầu)")
     p.add_argument("--max-queries", type=int, default=80,
                    help="tối đa số câu truy vấn mở rộng mỗi kế hoạch (mặc định 80)")
-    p.add_argument("--engines", default="bing,duckduckgo,google",
-                   help="engine tìm ảnh, theo thứ tự: bing,duckduckgo,google")
+    p.add_argument("--engines", default="bing,duckduckgo,reddit,google",
+                   help="nguồn tìm ảnh, theo thứ tự: bing,duckduckgo,reddit,google")
     p.add_argument("--proxy-file", help="file proxy, mỗi dòng 1 proxy (http://user:pass@host:port)")
     p.add_argument("--workers", type=int, default=8, help="số luồng tải ảnh song song (mặc định 8)")
     p.add_argument("--min-size", type=int, default=200, help="cạnh ngắn nhất của ảnh, px (mặc định 200)")
@@ -182,6 +199,8 @@ def main() -> int:
         min_size=args.min_size, hash_threshold=args.hash_threshold,
         safesearch=args.safesearch, fallback_search=args.fallback_search,
         depth=args.depth, max_pages=args.max_pages, match=args.match,
+        clip=args.clip, clip_model=args.clip_model, clip_threshold=args.clip_threshold,
+        clip_junk=not args.no_clip_junk, max_aspect=args.max_aspect, max_seconds=args.time_limit,
     )
 
     syn = Scraper(cfg, HttpClient(), Store.__new__(Store)).syn
@@ -194,6 +213,11 @@ def main() -> int:
             print(f"       tìm bằng: {q}")
     if banned:
         print(f"  Từ khoá cấm: {', '.join(banned)}")
+    if args.clip != "off":
+        import importlib.util
+        have = importlib.util.find_spec("torch") and importlib.util.find_spec("transformers")
+        print("  Lọc ảnh rác: " + ("CLIP (local)" if have else
+              "chưa cài CLIP -> lọc theo chữ (cài bằng: pip install -r requirements-clip.txt)"))
     print(f"  Lưu tại: {Path(out).resolve()}")
     if interactive and not args.yes:
         if ask("Bắt đầu? (Y/n)", "y").lower() not in YES:
@@ -201,6 +225,12 @@ def main() -> int:
     print()
 
     http = HttpClient(proxies=proxies, min_delay=dmin, max_delay=dmax)
+    if args.cookies:
+        try:
+            print(f"Đã nạp {http.load_cookies(args.cookies)} cookie từ {args.cookies}")
+        except (OSError, ValueError) as e:
+            print(f"Không đọc được file cookie: {e}", file=sys.stderr)
+            return 2
     store = Store(out, hash_threshold=cfg.hash_threshold)
     scraper = Scraper(cfg, http, store)
 

@@ -19,6 +19,7 @@ class Candidate:
     height: int = 0
     query: str = ""        # câu truy vấn thực tế đã tìm ra ảnh này
     matched: list = None   # type: ignore[assignment]  # các tag của kế hoạch mà ảnh khớp
+    need: list = None      # type: ignore[assignment]  # các tag ảnh BẮT BUỘC phải khớp ở vòng tìm này
 
 
 def clean_text(s: str | None) -> str:

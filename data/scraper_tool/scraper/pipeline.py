@@ -1,23 +1,26 @@
-"""Điều phối: nguồn (link / search engine) -> lọc -> tải song song -> chống trùng -> lưu."""
+"""Điều phối: nguồn (link / search engine / Reddit) -> lọc -> tải song song -> chống trùng
+-> (CLIP lọc ảnh rác) -> lưu."""
 from __future__ import annotations
 
 import hashlib
 import itertools
-from typing import Iterator
 import random
 import re
-import time
 import shutil
 import sys
 import threading
+import time
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, wait
 from dataclasses import dataclass, field
 from io import BytesIO
+from typing import Iterator
 from urllib.parse import urlparse
 
 import imagehash
 from PIL import Image
 
+from .clip_filter import ClipFilter, ClipUnavailable
 from .engines import ENGINES, Engine
 from .http import Blocked, FetchError, HttpClient
 from .models import Candidate, fold
@@ -29,15 +32,17 @@ from .synonyms import Synonyms
 Image.MAX_IMAGE_PIXELS = 80_000_000
 EXT = {"JPEG": "jpg", "PNG": "png", "WEBP": "webp", "GIF": "gif", "BMP": "bmp"}
 SKIP_EXT = (".svg", ".ico", ".cur")
+IMAGE_TIMEOUT = (5, 15)
 
 
 @dataclass
 class Config:
     out_dir: str = "output"
-    engines: list[str] = field(default_factory=lambda: ["bing", "duckduckgo", "google"])
+    engines: list[str] = field(default_factory=lambda: ["bing", "duckduckgo", "reddit", "google"])
     banned: list[str] = field(default_factory=list)
     workers: int = 8
     min_size: int = 200          # cạnh ngắn nhất (px)
+    max_aspect: float = 4.0      # bỏ ảnh quá dài/ngang kiểu banner (cạnh dài / cạnh ngắn)
     max_bytes: int = 25 * 1024 * 1024
     hash_threshold: int = 5      # khoảng cách Hamming tối đa coi là "trùng" (0-64)
     safesearch: str = "moderate"
@@ -48,9 +53,19 @@ class Config:
     expand: bool = True          # mở rộng truy vấn để vượt trần số kết quả của 1 câu tìm kiếm
     max_queries: int = 80        # tối đa số câu truy vấn mở rộng cho mỗi kế hoạch
     stall_queries: int = 8       # dừng nếu từng ấy câu mở rộng liên tiếp không thêm được ảnh nào
+    max_seconds: int = 900       # giới hạn thời gian cho mỗi kế hoạch (0 = không giới hạn)
+    engine_cooldown: int = 600   # engine bị captcha/chặn sẽ nghỉ từng ấy giây (áp dụng xuyên các kế hoạch)
+    host_fail_limit: int = 6     # host tải lỗi liên tiếp từng ấy lần mà chưa thành công lần nào -> bỏ qua host đó
     synonyms: bool = True        # bật bảng đồng nghĩa (thời trang = fashion, ...)
     alias_files: list[str] = field(default_factory=list)
-    match: str = "strict"        # strict: ảnh phải chứa TẤT CẢ tag trong metadata; loose: chỉ AND ở câu truy vấn
+    # auto: có CLIP thì để CLIP phán xét nội dung ảnh, không có thì kiểm tra chữ (strict)
+    # strict: chữ (tiêu đề/alt/URL) phải chứa TẤT CẢ tag; loose: không kiểm tra chữ
+    match: str = "auto"
+    clip: str = "auto"           # auto: dùng nếu đã cài; on: bắt buộc; off: tắt
+    clip_model: str = "openai/clip-vit-base-patch32"
+    clip_threshold: float = 0.22
+    clip_junk: bool = True
+    clip_junk_margin: float = 0.02
     depth: int = 0
     max_pages: int = 30
 
@@ -75,14 +90,26 @@ class Job:
 
 
 class Stats:
-    def __init__(self) -> None:
-        self.saved = self.dup = self.banned = self.failed = self.small = self.seen = self.nomatch = self.partial = 0
+    def __init__(self, max_seconds: int = 0) -> None:
+        self.saved = self.dup = self.banned = self.failed = self.small = self.seen = 0
+        self.nomatch = self.partial = self.clipped = self.junk = 0
         self.source = ""
+        self.reasons: Counter = Counter()
+        self.deadline = time.monotonic() + max_seconds if max_seconds else None
         self.lock = threading.Lock()
 
     def inc(self, name: str) -> None:
         with self.lock:
             setattr(self, name, getattr(self, name) + 1)
+
+    def fail(self, reason: str) -> None:
+        with self.lock:
+            self.failed += 1
+            self.reasons[reason] += 1
+
+    @property
+    def timed_out(self) -> bool:
+        return self.deadline is not None and time.monotonic() > self.deadline
 
 
 class Console:
@@ -116,25 +143,65 @@ class Round:
         self.subset, self.gen, self.stall = subset, gen, 0
 
 
+class Skip(Exception):
+    """Bỏ qua ảnh vì lý do rõ ràng (không phải lỗi mạng)."""
+
+
 class Scraper:
-    def __init__(self, cfg: Config, http: HttpClient, store: Store, console: Console | None = None) -> None:
+    def __init__(self, cfg: Config, http: HttpClient, store: Store,
+                 console: Console | None = None, clip: ClipFilter | None = None) -> None:
         self.cfg, self.http, self.store = cfg, http, store
         self.con = console or Console()
         self.syn = Synonyms.load(cfg.alias_files) if cfg.synonyms else Synonyms([])
         self.banned = [fold(b.strip()) for b in cfg.banned if b.strip()]
         self.seen_urls: set[str] = set()
         self.tag_rejected: set[str] = set()
-        self.dead: set[str] = set()      # engine bị chặn -> không dùng lại trong kế hoạch hiện tại
+        self.blocked_until: dict[str, float] = {}     # engine -> thời điểm được dùng lại (xuyên các kế hoạch)
+        self.host_fail: Counter = Counter()
+        self.host_ok: set[str] = set()
+        self._host_lock = threading.Lock()
+        self.clip_obj = clip
+        self._clip_tried = clip is not None
         self.engines: list[Engine] = [
             ENGINES[n](http, cfg.safesearch) for n in cfg.engines if n in ENGINES
         ]
 
+    # ------------------------------------------------------------------ CLIP
+    def _ensure_clip(self) -> None:
+        if self._clip_tried or self.cfg.clip == "off":
+            return
+        self._clip_tried = True
+        try:
+            self.con.line("Đang nạp CLIP (lần đầu sẽ tải model ~600MB)...")
+            self.clip_obj = ClipFilter(model_name=self.cfg.clip_model, threshold=self.cfg.clip_threshold,
+                                       junk=self.cfg.clip_junk, junk_margin=self.cfg.clip_junk_margin)
+        except Exception as e:  # noqa: BLE001
+            if self.cfg.clip == "on":
+                raise
+            why = str(e) if isinstance(e, ClipUnavailable) else f"{type(e).__name__}: {e}"
+            self.con.line(f"  ! không dùng được CLIP, chuyển sang lọc theo chữ. ({why})")
+            self.clip_obj = None
+
+    def _text_strict(self) -> bool:
+        return self.cfg.match == "strict" or (self.cfg.match == "auto" and self.clip_obj is None)
+
+    # ------------------------------------------------------------------ engine health
+    def _alive(self, e: Engine) -> bool:
+        return time.time() >= self.blocked_until.get(e.name, 0)
+
+    def _any_alive(self) -> bool:
+        return any(self._alive(e) for e in self.engines)
+
+    def _block(self, name: str, seconds: int) -> None:
+        self.blocked_until[name] = time.time() + seconds
+
     # ------------------------------------------------------------------ sources
     def _link_sources(self, job: Job) -> list[Source]:
-        return [Source("link", crawl(self.http, l, self.cfg.depth, self.cfg.max_pages)) for l in job.links]
+        nsfw = self.cfg.safesearch == "off"
+        return [Source("link", crawl(self.http, l, self.cfg.depth, self.cfg.max_pages, nsfw)) for l in job.links]
 
     def _engine_sources(self, query: str) -> list[Source]:
-        return [Source(e.name, e.search(query), query) for e in self.engines if e.name not in self.dead]
+        return [Source(e.name, e.search(query), query) for e in self.engines if self._alive(e)]
 
     # ------------------------------------------------------------------ filters
     def _is_banned(self, c: Candidate) -> bool:
@@ -187,6 +254,7 @@ class Scraper:
     def _filter(self, batch: list[Candidate], st: Stats, job: Job, subset: list[str] | None = None) -> list[Candidate]:
         """`subset` = các tag mà ảnh PHẢI khớp ở vòng này (mặc định: tất cả tag của kế hoạch)."""
         subset = subset or job.tags
+        strict = self._text_strict()
         keep = []
         for c in batch:
             st.inc("seen")
@@ -200,8 +268,8 @@ class Scraper:
                 self.seen_urls.add(u)
                 st.inc("banned")
                 continue
-            toks = self._toks(c) if self.cfg.match == "strict" else None
-            if toks is None:                       # không kiểm chứng được -> tin vào câu truy vấn
+            toks = self._toks(c) if strict else None
+            if toks is None:                       # không kiểm chứng được bằng chữ -> để CLIP/câu truy vấn lo
                 matched = list(subset)
             else:
                 matched = [t for t in job.tags if self._segs_ok(job.tag_segments[t], toks)]
@@ -215,57 +283,110 @@ class Scraper:
             if c.width and c.height and min(c.width, c.height) < self.cfg.min_size:
                 st.inc("small")
                 continue
-            c.matched = matched
+            c.matched, c.need = matched, list(subset)
             keep.append(c)
         return keep
 
     # ------------------------------------------------------------------ download
-    def _download(self, c: Candidate) -> bytes | None:
+    def _download(self, c: Candidate) -> bytes:
         origin = c.source_page or f"{urlparse(c.image_url).scheme}://{urlparse(c.image_url).netloc}/"
-        r = self.http.get(c.image_url, referer=origin, stream=True, kind="image", retries=1)
+        r = self.http.get(c.image_url, referer=origin, stream=True, kind="image", retries=0,
+                          timeout=IMAGE_TIMEOUT)
         try:
             ctype = r.headers.get("Content-Type", "").lower()
             if ctype and not (ctype.startswith("image/") or "octet-stream" in ctype):
-                return None
+                raise Skip("không phải ảnh")
             clen = r.headers.get("Content-Length")
             if clen and clen.isdigit() and int(clen) > self.cfg.max_bytes:
-                return None
+                raise Skip("quá lớn")
             buf = bytearray()
             for chunk in r.iter_content(65536):
                 buf += chunk
                 if len(buf) > self.cfg.max_bytes:
-                    return None
+                    raise Skip("quá lớn")
             return bytes(buf)
         finally:
             r.close()
 
+    def _host_blocked(self, host: str) -> bool:
+        with self._host_lock:
+            return self.host_fail[host] >= self.cfg.host_fail_limit and host not in self.host_ok
+
+    def _note_host(self, host: str, ok: bool) -> None:
+        with self._host_lock:
+            if ok:
+                self.host_ok.add(host)
+            else:
+                self.host_fail[host] += 1
+
+    @staticmethod
+    def _reason(e: Exception) -> str:
+        m = re.search(r"HTTP (\d{3})", str(e))
+        return f"HTTP {m.group(1)}" if m else "lỗi mạng/timeout"
+
     def _process(self, c: Candidate, job: Job, st: Stats) -> None:
-        if st.saved >= job.count:
+        if st.saved >= job.count or st.timed_out:
+            return
+        host = urlparse(c.image_url).netloc
+        if self._host_blocked(host):
+            st.fail("host bị bỏ qua (lỗi liên tiếp)")
             return
         try:
             data = self._download(c)
-            if not data:
-                st.inc("failed")
-                return
+        except Skip as e:
+            st.fail(str(e))
+            return
+        except FetchError as e:
+            self._note_host(host, False)
+            st.fail(self._reason(e))
+            return
+        except Exception as e:  # noqa: BLE001  (đứt kết nối giữa chừng, v.v.)
+            self._note_host(host, False)
+            st.fail(self._reason(e))
+            return
+        self._note_host(host, True)
+
+        try:
             img = Image.open(BytesIO(data))
             fmt = img.format or ""
             img.verify()
             img = Image.open(BytesIO(data))
             w, h = img.size
             if fmt not in EXT:
-                st.inc("failed")
+                st.fail("định dạng lạ")
                 return
-            if min(w, h) < self.cfg.min_size:
-                st.inc("small")
+            if min(w, h) < self.cfg.min_size or max(w, h) / max(1, min(w, h)) > self.cfg.max_aspect:
+                st.inc("small")                      # quá nhỏ hoặc dị dạng (banner dài/hẹp)
                 return
             thumb = img.copy()
             thumb.thumbnail((512, 512))
-            phash = int(str(imagehash.phash(thumb.convert("RGB"))), 16)
-        except (FetchError, OSError, ValueError, Image.DecompressionBombError, SyntaxError):
-            st.inc("failed")
+            rgb = thumb.convert("RGB")
+            phash = int(str(imagehash.phash(rgb)), 16)
+        except (OSError, ValueError, Image.DecompressionBombError, SyntaxError):
+            st.fail("ảnh hỏng")
             return
 
         md5 = hashlib.md5(data).hexdigest()
+        if self.store.is_dup(md5, phash):            # kiểm tra trùng TRƯỚC khi tốn công chạy CLIP
+            st.inc("dup")
+            return
+
+        matched = list(c.matched or job.tags)
+        scores = None
+        if self.clip_obj is not None:
+            try:
+                v = self.clip_obj.judge(rgb)
+            except Exception:  # noqa: BLE001
+                st.fail("CLIP lỗi")
+                return
+            if v.junk:
+                st.inc("junk")
+                return
+            matched, scores = v.matched, v.scores
+            if not all(t in matched for t in (c.need or job.tags)):
+                st.inc("clipped")
+                return
+
         with st.lock:
             if st.saved >= job.count:
                 return
@@ -273,8 +394,8 @@ class Scraper:
                 data=data, ext=EXT[fmt], md5=md5, phash=phash,
                 meta={
                     "category": job.category, "keywords": c.query or job.query, "tags": job.tags,
-                    "matched_tags": c.matched or job.tags,
-                    "match": "full" if len(c.matched or job.tags) == len(job.tags) else "partial",
+                    "matched_tags": matched, "clip_scores": scores,
+                    "match": "full" if len(matched) == len(job.tags) else "partial",
                     "image_url": c.image_url, "source_page": c.source_page,
                     "title": c.title, "alt_text": c.alt, "engine": c.engine,
                     "width": w, "height": h, "format": fmt.lower(),
@@ -289,17 +410,18 @@ class Scraper:
 
     # ------------------------------------------------------------------ run
     def _render(self, job: Job, st: Stats) -> None:
+        clip = f" | lệch ảnh {st.clipped} rác {st.junk}" if self.clip_obj else ""
         self.con.progress(
-            f"[{job.category}] {st.saved}/{job.count} | trùng {st.dup} | cấm {st.banned} | lệch tag {st.nomatch} | một phần {st.partial} | "
-            f"nhỏ {st.small} | lỗi {st.failed} | {st.source}"
+            f"[{job.category}] {st.saved}/{job.count} | trùng {st.dup} | cấm {st.banned} | "
+            f"lệch tag {st.nomatch}{clip} | một phần {st.partial} | nhỏ {st.small} | lỗi {st.failed} | {st.source}"
         )
 
     def _drain(self, sources: list[Source], job: Job, st: Stats, pool: ThreadPoolExecutor, limit: int,
                subset: list[str] | None = None) -> None:
-        """Lấy ảnh từ các nguồn (xoay vòng) cho tới khi đủ số lượng hoặc hết nguồn."""
-        while st.saved < job.count and sources and st.seen < limit:
+        """Lấy ảnh từ các nguồn (xoay vòng) cho tới khi đủ số lượng, hết nguồn hoặc hết thời gian."""
+        while st.saved < job.count and sources and st.seen < limit and not st.timed_out:
             for src in list(sources):
-                if st.saved >= job.count:
+                if st.saved >= job.count or st.timed_out:
                     break
                 st.source = f"{src.name}: {src.query}" if src.query else src.name
                 self._render(job, st)
@@ -312,9 +434,9 @@ class Scraper:
                     src.fails += 1
                     self.con.line(f"  ! {src.name}: {e}")
                     if src.fails >= 2 or isinstance(e, Blocked):
-                        if isinstance(e, Blocked) and src.name != "link":
-                            self.dead.add(src.name)
-                        self.con.line(f"  ! tạm tắt nguồn {src.name} cho kế hoạch này")
+                        if src.name != "link":
+                            self._block(src.name, self.cfg.engine_cooldown if isinstance(e, Blocked) else 120)
+                            self.con.line(f"  ! nghỉ nguồn {src.name} một lúc (áp dụng cho các kế hoạch sau)")
                         sources.remove(src)
                     continue
                 src.fails = 0
@@ -329,7 +451,7 @@ class Scraper:
                     _, pending = wait(pending, timeout=0.5)
                     self._render(job, st)
 
-    def _make_round(self, job: Job, tags: list[str], max_queries: int, include_base: bool = True) -> "Round":
+    def _make_round(self, job: Job, tags: list[str], max_queries: int, include_base: bool = True) -> Round:
         subset = None if tags == job.tags else tags
 
         def gen() -> Iterator[str]:
@@ -340,19 +462,19 @@ class Scraper:
 
         return Round(subset, gen())
 
-    def _run_rounds(self, job: Job, st: Stats, pool: ThreadPoolExecutor, limit: int, rounds: list["Round"]) -> int:
+    def _run_rounds(self, job: Job, st: Stats, pool: ThreadPoolExecutor, limit: int, rounds: list[Round]) -> int:
         """Chạy xen kẽ các bộ tag (mỗi lượt 1 câu truy vấn mỗi bộ) để số ảnh chia đều giữa các bộ."""
         n = 0
         active = list(rounds)
-        while active and st.saved < job.count and st.seen < limit:
+        while active and st.saved < job.count and st.seen < limit and not st.timed_out:
             for r in list(active):
-                if st.saved >= job.count:
+                if st.saved >= job.count or st.timed_out:
                     break
                 if r.stall >= self.cfg.stall_queries:
                     active.remove(r)
                     continue
-                if not [e for e in self.engines if e.name not in self.dead]:
-                    self.con.line("  ! mọi search engine đều đang bị chặn, dừng mở rộng")
+                if not self._any_alive():
+                    self.con.line("  ! mọi search engine đang bị chặn/nghỉ, dừng mở rộng")
                     return n
                 q = next(r.gen, None)
                 if q is None:
@@ -360,19 +482,21 @@ class Scraper:
                     continue
                 before = st.saved
                 n += 1
-                time.sleep(random.uniform(0.8, 2.0))
+                time.sleep(random.uniform(0.3, 0.8))
                 self._drain(self._engine_sources(q), job, st, pool, limit, r.subset)
                 r.stall = 0 if st.saved > before else r.stall + 1
         return n
 
     def run_job(self, job: Job) -> Stats:
-        st = Stats()
+        st = Stats(self.cfg.max_seconds)
+        self._ensure_clip()
         job.tag_segments = {t: self.syn.segments(t) for t in job.tags}
         job.segments = [seg for t in job.tags for seg in job.tag_segments[t]]
         job.search_query = self.syn.query(job.tags)
+        if self.clip_obj is not None:
+            self.clip_obj.prepare({t: self.syn.query([t]) for t in job.tags})
         self.seen_urls = set()   # ảnh bị loại ở kế hoạch khác vẫn được xét lại ở kế hoạch này
         self.tag_rejected = set()
-        self.dead = set()
         use_search = not job.links or self.cfg.fallback_search
         limit = job.count * 80 + 500
         pool = ThreadPoolExecutor(max_workers=self.cfg.workers)
@@ -387,7 +511,7 @@ class Scraper:
                     job, st, pool, limit, [self._make_round(job, job.tags, self.cfg.max_queries, False)])
 
             # vòng 2: vẫn thiếu -> tách lẻ tag (từ tổ hợp lớn xuống nhỏ), ảnh khớp một phần được đánh dấu
-            if use_search and self.cfg.split and len(job.tags) > 1 and st.saved < job.count:
+            if use_search and self.cfg.split and len(job.tags) > 1 and st.saved < job.count and not st.timed_out:
                 subsets = [list(c) for k in range(len(job.tags) - 1, 0, -1)
                            for c in itertools.combinations(job.tags, k)][: self.cfg.max_subsets]
                 self.con.line(f"  → chưa đủ ảnh khớp tất cả tag, chuyển sang tìm theo tag lẻ "
@@ -396,7 +520,7 @@ class Scraper:
                     level = [t for t in subsets if len(t) == k]
                     if not level:
                         continue
-                    if st.saved >= job.count or st.seen >= limit:
+                    if st.saved >= job.count or st.seen >= limit or st.timed_out:
                         break
                     queries_run += self._run_rounds(
                         job, st, pool, limit,
@@ -410,12 +534,25 @@ class Scraper:
             self.store.save()
         self._render(job, st)
         self.con.line("")
+        self._report(job, st, queries_run)
+        return st
+
+    def _report(self, job: Job, st: Stats, queries_run: int) -> None:
         if queries_run:
             self.con.line(f"  (đã dùng thêm {queries_run} câu truy vấn mở rộng/tách tag)")
         if st.partial:
             self.con.line(f"  ℹ {st.partial}/{st.saved} ảnh chỉ khớp một phần tag (cột match=partial, "
                           f"matched_tags cho biết tag nào khớp)")
+        if st.reasons:
+            top = ", ".join(f"{k}: {v}" for k, v in st.reasons.most_common(4))
+            self.con.line(f"  ℹ ảnh tải lỗi/bỏ qua: {top}")
+        now = time.time()
+        blocked = [f"{n} (~{int(t - now)}s)" for n, t in self.blocked_until.items() if t > now]
+        if blocked:
+            self.con.line(f"  ⚠ engine đang bị chặn/captcha: {', '.join(blocked)}. "
+                          f"Thử --cookies (cookie trình duyệt của bạn), --proxy-file, hoặc đợi vài phút")
+        if st.timed_out:
+            self.con.line(f"  ⏱ hết giới hạn thời gian {self.cfg.max_seconds}s cho kế hoạch này (đổi bằng --time-limit)")
         if st.saved < job.count:
-            hint = "thử --match loose, thêm tag đồng nghĩa vào aliases.txt, hoặc đưa thêm link"
+            hint = "thử --match loose, thêm tag đồng nghĩa vào aliases.txt, hạ --clip-threshold, hoặc đưa thêm link"
             self.con.line(f"  ⚠ chỉ lấy được {st.saved}/{job.count} ảnh cho '{job.category}'. Gợi ý: {hint}")
-        return st

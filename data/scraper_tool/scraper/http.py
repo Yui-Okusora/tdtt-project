@@ -8,9 +8,12 @@
 """
 from __future__ import annotations
 
+import json
 import random
 import threading
 import time
+from http.cookiejar import MozillaCookieJar
+from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
@@ -64,8 +67,40 @@ class HttpClient:
         self._lock = threading.Lock()
         self._next_ok: dict[str, float] = {}
         self._bad_proxy_until: dict[str, float] = {}
+        self._cookies: list[dict] = []
 
     # ------------------------------------------------------------------ sessions
+    # ------------------------------------------------------------------ cookies
+    def load_cookies(self, path: str | Path) -> int:
+        """Nạp cookie đã xuất từ trình duyệt (định dạng Netscape cookies.txt hoặc JSON của
+        EditThisCookie/Cookie-Editor). Cookie chỉ được gửi tới đúng domain của nó."""
+        path = Path(path)
+        text = path.read_text(encoding="utf-8", errors="replace")
+        loaded: list[dict] = []
+        if text.lstrip().startswith(("[", "{")):
+            data = json.loads(text)
+            data = data.get("cookies", []) if isinstance(data, dict) else data
+            for c in data:
+                if c.get("name") and c.get("domain"):
+                    loaded.append({"name": c["name"], "value": str(c.get("value", "")),
+                                   "domain": c["domain"], "path": c.get("path", "/"),
+                                   "secure": bool(c.get("secure", False))})
+        else:
+            jar = MozillaCookieJar()
+            # MozillaCookieJar đòi dòng đầu "# Netscape HTTP Cookie File"
+            tmp = path.with_suffix(path.suffix + ".tmp_cj")
+            tmp.write_text("# Netscape HTTP Cookie File\n" + text.replace("#HttpOnly_", ""), encoding="utf-8")
+            try:
+                jar.load(str(tmp), ignore_discard=True, ignore_expires=True)
+            finally:
+                tmp.unlink(missing_ok=True)
+            for c in jar:
+                loaded.append({"name": c.name, "value": c.value or "", "domain": c.domain,
+                               "path": c.path or "/", "secure": bool(c.secure)})
+        self._cookies = loaded
+        self.rotate()
+        return len(loaded)
+
     def _pick_proxy(self) -> str | None:
         if not self.proxies:
             return None
@@ -83,6 +118,8 @@ class HttpClient:
             adapter = HTTPAdapter(pool_connections=20, pool_maxsize=20)
             s.mount("http://", adapter)
             s.mount("https://", adapter)
+            for c in self._cookies:
+                s.cookies.set(c["name"], c["value"], domain=c["domain"], path=c["path"], secure=c["secure"])
             proxy = self._pick_proxy()
             if proxy:
                 s.proxies = {"http": proxy, "https": proxy}
@@ -133,6 +170,7 @@ class HttpClient:
         kind: str = "page",
         scale: float = 1.0,
         retries: int | None = None,
+        timeout: tuple[float, float] | None = None,
     ) -> requests.Response:
         host = urlparse(url).netloc
         attempts = (self.max_retries if retries is None else retries) + 1
@@ -149,7 +187,7 @@ class HttpClient:
             h.update(headers or {})
             try:
                 r = self._session().get(
-                    url, params=params, headers=h, timeout=self.timeout,
+                    url, params=params, headers=h, timeout=timeout or self.timeout,
                     stream=stream, allow_redirects=True,
                 )
             except requests.RequestException as e:
