@@ -1,0 +1,551 @@
+/* =============================================================
+   POSEXIMI v3.1 — Overrides ONLY. The original desktop layout,
+   card style, spacing language and wine/pink palette are retained.
+   Sections: P-brand / Login rules / Workspace hover / Ordered
+   cards / Full-camera / AI modal / Mobile adaptive overrides.
+   ============================================================= */
+
+/* 1) Brand identity — the letter P is the primary visual mark. */
+.brand-logo-p {
+  width: 39px;
+  height: 39px;
+  display: block;
+  border-radius: 13px;
+  flex: none;
+  box-shadow: 0 5px 14px #7e1f3c25;
+}
+.login-brand .brand-logo-p {
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+}
+.workspace-brand {
+  gap: 10px;
+}
+
+/* 2) Password/username requirements: separate inline feedback box. */
+.credential-box {
+  border: 1px solid #e8c5d0;
+  border-radius: 13px;
+  background: #fff4f7;
+  padding: 13px 15px;
+  margin: 13px 0 6px;
+  box-shadow: 0 3px 9px #7d1c3d06;
+}
+.credential-box-title {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: #7d1c3d;
+  margin-bottom: 8px;
+}
+.credential-box-title span {
+  font-size: 18px;
+}
+.credential-box p {
+  font-size: 11px;
+  line-height: 1.55;
+  margin: 5px 0;
+  color: #765c65;
+}
+.credential-box p.is-valid {
+  color: #23734a;
+}
+.credential-box p.is-invalid {
+  color: #ad2f52;
+}
+.credential-box .credential-error {
+  border-top: 1px solid #edd1d8;
+  padding-top: 9px;
+  margin-top: 10px;
+  color: #b3264c;
+  font-weight: 700;
+}
+
+/* 3) Workspace menu: hover popup on mouse, expanded details on touch. */
+.workspace-launcher {
+  margin: 0 0 24px;
+  position: relative;
+  z-index: 5;
+}
+.workspace-launcher .section-heading {
+  margin-bottom: 13px;
+}
+.workspace-launcher h2 {
+  font-size: 15px;
+}
+.workspace-menu {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+.workspace-menu-tile {
+  font: inherit;
+  position: relative;
+  min-width: 0;
+  background: #fffdfa;
+  border: 1px solid #eddbe0;
+  border-radius: 15px;
+  padding: 13px 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+  text-align: center;
+  min-height: 105px;
+  color: #753047;
+  transition:
+    box-shadow 0.17s,
+    border-color 0.17s,
+    transform 0.17s;
+  isolation: isolate;
+}
+.workspace-menu-tile strong {
+  font-size: 11px;
+  line-height: 1.35;
+}
+.workspace-menu-tile .workspace-icon {
+  font-size: 25px;
+  line-height: 1;
+}
+.workspace-lock {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  font-size: 12px;
+  color: #9f365a;
+}
+.workspace-menu-tile.is-locked {
+  color: #95858b;
+  background: #f6f1f1;
+}
+.workspace-menu-tile.is-locked .workspace-icon {
+  opacity: 0.6;
+}
+.workspace-menu-tile:hover,
+.workspace-menu-tile:focus-visible {
+  transform: translateY(-2px);
+  border-color: #cd819b;
+  box-shadow: 0 7px 18px #7e1c3c13;
+  z-index: 10;
+}
+.workspace-hover-detail {
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(235px, 72vw);
+  border: 1px solid #e9bdcc;
+  background: #fff9fb;
+  border-radius: 12px;
+  box-shadow: 0 15px 32px #51223821;
+  color: #6e4c59;
+  line-height: 1.65;
+  font-size: 11px;
+  text-align: left;
+  padding: 12px 13px;
+  z-index: 15;
+  pointer-events: none;
+}
+.workspace-hover-detail b {
+  display: block;
+  color: #8c2044;
+  margin-bottom: 5px;
+}
+.workspace-menu-tile:hover .workspace-hover-detail,
+.workspace-menu-tile:focus-visible .workspace-hover-detail,
+.workspace-hover-detail[data-expanded="true"] {
+  display: block;
+}
+.nav-item.nav-locked {
+  color: #aaa2a5;
+}
+.nav-item.nav-locked .nav-icon {
+  font-size: 17px;
+  filter: grayscale(0.2);
+}
+.nav-item.nav-locked:hover {
+  background: #f7f0f2;
+}
+
+/* 4) Home cards: clear top-to-bottom order and ONE final proceed button. */
+.home-step-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.home-step-stack > .content-card {
+  margin: 0;
+}
+.home-pose-teasers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.teaser-pose {
+  background: #fff5f7;
+  border: 1px solid #f0e0e4;
+  border-radius: 11px;
+  padding: 6px;
+  overflow: hidden;
+  text-align: center;
+}
+.teaser-pose .pose-illustration {
+  height: 112px;
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+}
+.teaser-pose small {
+  font-size: 10px;
+  color: #8b5870;
+  display: block;
+  padding-top: 7px;
+}
+.home-step-stack .input-photo-card {
+  display: grid;
+  grid-template-columns: minmax(115px, 180px) 1fr;
+  align-items: center;
+  gap: 14px;
+}
+.home-step-stack .input-photo-preview {
+  height: 126px;
+}
+.home-step-stack .input-photo-copy {
+  margin: 0;
+}
+.home-step-stack .input-photo-actions {
+  justify-content: flex-start;
+  grid-column: 2;
+  margin-top: -46px;
+  align-self: end;
+}
+.image-guideline {
+  background: #fcf1f5;
+  border: 1px solid #f1d6e0;
+  border-radius: 11px;
+  padding: 14px 15px;
+  margin-top: 12px;
+}
+.image-guideline strong {
+  font-size: 12px;
+  color: #86284b;
+}
+.image-guideline p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #7f5868;
+  margin: 6px 0 0;
+}
+.single-next-action {
+  margin: 21px 0 0;
+  background: #fffdfa;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 11px;
+}
+.single-next-action p {
+  font-size: 12px;
+  color: #806672;
+  margin: 0;
+}
+.single-next-action .btn {
+  min-width: min(100%, 350px);
+  justify-content: center;
+}
+.single-next-action small {
+  font-size: 10px;
+  color: #a16b7d;
+}
+.start-card {
+  padding: 20px;
+}
+
+/* 5) Camera: one LARGE viewport and no side template. */
+.camera-workspace {
+  padding: 16px;
+}
+.camera-large {
+  height: min(69svh, 720px);
+  min-height: 410px;
+  width: 100%;
+  border: 0;
+  border-radius: 17px;
+  background: #23181e;
+}
+.camera-large video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transform: none;
+}
+.camera-large video.front-camera {
+  transform: scaleX(-1);
+}
+.camera-large img.existing-photo {
+  object-fit: contain;
+}
+.camera-toolbar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.camera-toolbar .btn {
+  min-height: 46px;
+}
+.camera-toolbar .shutter-button {
+  min-width: 152px;
+  font-weight: 800;
+}
+.camera-zoom {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  border: 1px solid #ead7dc;
+  border-radius: 12px;
+  background: #fff5f8;
+  margin-top: 13px;
+  padding: 12px 15px;
+}
+.camera-zoom label {
+  font-size: 12px;
+  font-weight: 750;
+}
+.camera-zoom input {
+  flex: 1;
+  accent-color: #8c2044;
+  min-width: 120px;
+}
+.camera-zoom span {
+  font-size: 13px;
+  font-weight: 800;
+  color: #8c2044;
+}
+.camera-zoom small {
+  width: 100%;
+  font-size: 10px;
+  color: #917581;
+}
+
+/* 6) Loading and backend-generated photo preview. */
+.ai-loading {
+  text-align: center;
+  padding: 25px 8px 12px;
+}
+.ai-loading h2 {
+  font-size: 20px;
+  margin: 14px 0 4px;
+}
+.ai-loading p {
+  font-size: 12px;
+  color: #987e88;
+  line-height: 1.75;
+}
+.ai-loading .btn {
+  margin-top: 17px;
+}
+.ai-progress-track {
+  margin: 20px auto 0;
+  width: min(100%, 300px);
+  height: 7px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #f0dce4;
+}
+.ai-progress-track span {
+  display: block;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(110deg, #d5698d, #8c2044);
+  border-radius: 20px;
+  animation: aiShift 1.3s ease-in-out infinite alternate;
+}
+@keyframes aiShift {
+  from {
+    transform: translateX(-60%);
+  }
+  to {
+    transform: translateX(210%);
+  }
+}
+.ai-preview-image {
+  width: 100%;
+  max-height: 68svh;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #f7ebf0;
+  display: block;
+}
+
+/* 7) Phone and PWA safe areas. Preserve original bottom navigation. */
+@media (max-width: 1120px) {
+  .workspace-menu {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .login-brand .brand-logo-p {
+    width: 36px;
+    height: 36px;
+  }
+  .main-content {
+    padding-top: 19px;
+  }
+  .workspace-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .workspace-menu-tile {
+    min-height: 85px;
+    padding: 10px 7px;
+  }
+  .workspace-menu-tile .workspace-icon {
+    font-size: 19px;
+  }
+  .workspace-menu-tile strong {
+    font-size: 11px;
+  }
+  .workspace-hover-detail {
+    top: calc(100% + 2px);
+  }
+  .home-step-stack .input-photo-card {
+    grid-template-columns: minmax(90px, 120px) 1fr;
+    gap: 9px;
+  }
+  .home-step-stack .input-photo-preview {
+    height: 115px;
+  }
+  .home-step-stack .input-photo-actions {
+    margin-top: 0;
+    grid-column: 1/-1;
+  }
+  .home-step-stack .input-photo-actions .btn {
+    min-height: 43px;
+  }
+  .teaser-pose .pose-illustration {
+    height: 100px;
+  }
+  .camera-workspace {
+    padding: 9px;
+  }
+  .camera-workspace .section-heading {
+    padding: 5px 7px 0;
+  }
+  .camera-large {
+    height: clamp(460px, 74svh, 800px);
+    min-height: 0;
+    border-radius: 15px;
+  }
+  .camera-toolbar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .camera-toolbar .btn {
+    width: 100%;
+  }
+  .camera-toolbar .shutter-button {
+    min-width: 0;
+  }
+  .continue-bar {
+    align-items: stretch;
+    gap: 10px;
+    flex-direction: column;
+  }
+  .continue-bar .btn {
+    width: 100%;
+  }
+  .single-next-action {
+    padding: 16px 12px;
+    margin-top: 16px;
+  }
+}
+@media (max-width: 460px) {
+  .workspace-menu-tile {
+    min-height: 78px;
+  }
+  .home-pose-teasers {
+    gap: 5px;
+  }
+  .teaser-pose .pose-illustration {
+    height: 73px;
+  }
+  .teaser-pose small {
+    font-size: 9px;
+  }
+  .camera-large {
+    height: 76svh;
+    min-height: 440px;
+  }
+  .camera-toolbar .btn {
+    font-size: 11px;
+    padding: 11px 7px;
+  }
+  .camera-zoom {
+    padding: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-menu-tile,
+  .ai-progress-track span {
+    animation: none;
+    transition: none;
+  }
+}
+/* Keep phone shutter and lens-switching buttons INSIDE the visible camera viewport. */
+@media (max-width: 760px) {
+  .camera-workspace {
+    position: relative;
+  }
+  .camera-toolbar {
+    position: relative;
+    z-index: 4;
+    margin: -106px 8px 0;
+    padding: 9px;
+    background: #251820ce;
+    border-radius: 14px;
+    box-shadow: 0 9px 24px #170b1390;
+    backdrop-filter: blur(10px);
+  }
+  .camera-toolbar .btn {
+    min-height: 41px;
+    box-shadow: none;
+  }
+  .camera-zoom {
+    position: absolute;
+    top: 82px;
+    left: 19px;
+    right: 19px;
+    z-index: 4;
+    max-width: 450px;
+    background: #fff7f2eb;
+    backdrop-filter: blur(8px);
+    padding: 8px 11px;
+    margin: 0;
+  }
+  .camera-zoom small {
+    display: none;
+  }
+  .workspace-menu-tile:nth-child(2n) .workspace-hover-detail {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+  .workspace-menu-tile:nth-child(2n + 1) .workspace-hover-detail {
+    left: 0;
+    right: auto;
+    transform: none;
+  }
+}
