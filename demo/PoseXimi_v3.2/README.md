@@ -21,6 +21,7 @@
    ```
 
    Trên Windows, macOS hoặc Linux đều dùng Node.js 20+; `python -m http.server` không có API đăng nhập.
+
 3. Mở **http://localhost:5500/**; không mở file bằng `file://`.
 4. Chọn **Đăng ký (Sign up)** để tạo tài khoản thực trong backend local; dùng **Log in** để đăng nhập hoặc **Khách** để xem thử.
 
@@ -89,7 +90,6 @@ Các API giữ nguyên như v3:
 - `POST /api/pose-preview`: đầu vào `{ "poseId": "duo-side", "peopleCount": 2, "style": "Casual", "backgroundImage": "data:...", "peopleImage": "data:..." }`; kết quả `{ "imageUrl": "https://..." }` hoặc `imageBase64`.
 
 **Giới hạn demo:** PWA có backend đăng ký/đăng nhập local, nhưng chưa có xác thực sẵn sàng production; AI ghép ảnh và nhận diện toàn thân vẫn cần backend. Album chỉ lưu trên thiết bị, không có đồng bộ tài khoản. Ảnh được tải/chụp và duyệt trong trình duyệt có thể mất khi xóa dữ liệu web.
-
 
 ## Bản cập nhật ngày 30/10/2026 — Đăng ký, chỉnh pose và đổi theme
 

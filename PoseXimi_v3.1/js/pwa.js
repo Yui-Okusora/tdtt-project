@@ -8,8 +8,8 @@
   const dismissBtn = document.getElementById("pwaDismissBtn");
   const iOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
   const standalone = () =>
-    matchMedia("(display-mode: standalone)").matches
-    || navigator.standalone === true;
+    matchMedia("(display-mode: standalone)").matches ||
+    navigator.standalone === true;
   let installPrompt = null;
   let waitingWorker = null;
   let reloadForUpdate = false;
@@ -44,10 +44,10 @@
       updateInstallButton();
     } else if (iOS) {
       const message =
-        "<h2>Cài PoseXimi lên màn hình chính</h2>"
-        + '<p class="muted">Trên iPhone, mở trang bằng Safari, nhấn nút Chia sẻ (Share) hoặc menu trình duyệt và chọn <strong>Thêm vào Màn hình chính (Add to Home Screen)</strong>.</p>'
-        + '<p class="muted">Để cài thật trên iPhone, hãy mở website qua HTTPS; địa chỉ HTTP dạng IP LAN không đủ điều kiện cho camera và service worker.</p>'
-        + '<div class="modal-actionbar"><button class="btn btn-primary" data-action="modal-close" type="button">Đã hiểu</button></div>';
+        "<h2>Cài PoseXimi lên màn hình chính</h2>" +
+        '<p class="muted">Trên iPhone, mở trang bằng Safari, nhấn nút Chia sẻ (Share) hoặc menu trình duyệt và chọn <strong>Thêm vào Màn hình chính (Add to Home Screen)</strong>.</p>' +
+        '<p class="muted">Để cài thật trên iPhone, hãy mở website qua HTTPS; địa chỉ HTTP dạng IP LAN không đủ điều kiện cho camera và service worker.</p>' +
+        '<div class="modal-actionbar"><button class="btn btn-primary" data-action="modal-close" type="button">Đã hiểu</button></div>';
       if (typeof window.PoseXimiShowModal === "function")
         window.PoseXimiShowModal(message);
       else alert("Trong Safari: Chia sẻ → Thêm vào Màn hình chính.");

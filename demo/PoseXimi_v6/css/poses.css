@@ -1,2 +1,94 @@
 /* Pose grid */
-.filter-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 19px}.filter-hint{font-size:12px;color:#918b9d}.tag-chip{border-radius:19px;background:#f0ecf9;color:#7559a7;font-size:11px;font-weight:700;padding:8px 13px}.pose-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.pose-card{background:#fff;padding:10px;border:1px solid #eeeaf2;border-radius:17px;transition:box-shadow .15s,transform .15s}.pose-card:hover{transform:translateY(-3px);box-shadow:0 13px 28px #48335a14}.pose-card.chosen{border-color:#b7a2eb}.pose-illustration{display:block;width:100%;height:190px;border-radius:11px;overflow:hidden;object-fit:cover}.pose-meta{padding:13px 5px 5px}.pose-topline{display:flex;justify-content:space-between;align-items:center;gap:10px}.pose-topline h3{font-size:14px;margin:0}.pose-topline .mini-badge{font-size:9px;padding:5px 7px}.pose-meta p{font-size:11px;color:#9b95a4;margin:8px 0 14px;line-height:1.5}.pose-actions{display:flex;gap:8px}.pose-actions .btn{font-size:11px;padding:9px 10px;min-height:37px;flex:1}.pose-actions .btn-outline{flex:0 0 auto}.pose-detail-modal{max-width:620px!important}.pose-detail-modal .pose-illustration{height:320px}.pose-detail-modal h2{margin:22px 0 8px}
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 19px;
+}
+.filter-hint {
+  font-size: 12px;
+  color: #918b9d;
+}
+.tag-chip {
+  border-radius: 19px;
+  background: #f0ecf9;
+  color: #7559a7;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 13px;
+}
+.pose-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.pose-card {
+  background: #fff;
+  padding: 10px;
+  border: 1px solid #eeeaf2;
+  border-radius: 17px;
+  transition:
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+.pose-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 13px 28px #48335a14;
+}
+.pose-card.chosen {
+  border-color: #b7a2eb;
+}
+.pose-illustration {
+  display: block;
+  width: 100%;
+  height: 190px;
+  border-radius: 11px;
+  overflow: hidden;
+  object-fit: cover;
+}
+.pose-meta {
+  padding: 13px 5px 5px;
+}
+.pose-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.pose-topline h3 {
+  font-size: 14px;
+  margin: 0;
+}
+.pose-topline .mini-badge {
+  font-size: 9px;
+  padding: 5px 7px;
+}
+.pose-meta p {
+  font-size: 11px;
+  color: #9b95a4;
+  margin: 8px 0 14px;
+  line-height: 1.5;
+}
+.pose-actions {
+  display: flex;
+  gap: 8px;
+}
+.pose-actions .btn {
+  font-size: 11px;
+  padding: 9px 10px;
+  min-height: 37px;
+  flex: 1;
+}
+.pose-actions .btn-outline {
+  flex: 0 0 auto;
+}
+.pose-detail-modal {
+  max-width: 620px !important;
+}
+.pose-detail-modal .pose-illustration {
+  height: 320px;
+}
+.pose-detail-modal h2 {
+  margin: 22px 0 8px;
+}

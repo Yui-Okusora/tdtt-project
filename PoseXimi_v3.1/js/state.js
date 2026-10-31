@@ -37,10 +37,13 @@ export const state = {
 };
 export function poseList() {
   const key =
-    state.people === 1 ? "solo"
-    : state.people === 2 ? "duo"
-    : state.people === 3 ? "trio"
-    : "group";
+    state.people === 1
+      ? "solo"
+      : state.people === 2
+        ? "duo"
+        : state.people === 3
+          ? "trio"
+          : "group";
   const local = POSE_PRESETS[key].map(([id, title, description, variant]) => ({
     id,
     title,

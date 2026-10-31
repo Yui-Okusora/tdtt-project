@@ -11,18 +11,16 @@ export function renderCapture() {
     live = !!state.camera.stream;
   return `${heading("CAMERA & UPLOAD", "Studio chụp ảnh", `Đang thực hiện: ${pose.title} · ${state.people} người. Đối chiếu ô pose mẫu nổi trong camera để tạo dáng.`)}
  <div class="camera-workspace content-card"><div class="section-heading"><h2>Máy ảnh của bạn</h2><span class="tag-chip">${
-   photo ? "✓ Ảnh đã sẵn sàng"
-   : live ? "● Camera trực tiếp"
-   : "Chưa mở camera"
+   photo ? "✓ Ảnh đã sẵn sàng" : live ? "● Camera trực tiếp" : "Chưa mở camera"
  }</span></div>
  <div id="captureDropzone" class="capture-stage camera-large ${photo && !live ? "has-photo" : ""}">
  <span class="camera-watermark">P · POSEXIMI</span>
  ${
-   live ?
-     `<video id="liveVideo" class="${state.camera.facing === "user" ? "front-camera" : ""}" autoplay muted playsinline aria-label="Camera đang hoạt động"></video>`
-   : photo ?
-     `<img class="existing-photo" src="${photo}" alt="Ảnh nhóm sau khi chụp" />`
-   : '<div class="camera-placeholder"><div class="big-camera">◎</div><h3>Chụp trọn khoảnh khắc</h3><p>Cho tất cả người tham gia vào khung hình, sau đó bấm mở camera hoặc tải ảnh.</p></div>'
+   live
+     ? `<video id="liveVideo" class="${state.camera.facing === "user" ? "front-camera" : ""}" autoplay muted playsinline aria-label="Camera đang hoạt động"></video>`
+     : photo
+       ? `<img class="existing-photo" src="${photo}" alt="Ảnh nhóm sau khi chụp" />`
+       : '<div class="camera-placeholder"><div class="big-camera">◎</div><h3>Chụp trọn khoảnh khắc</h3><p>Cho tất cả người tham gia vào khung hình, sau đó bấm mở camera hoặc tải ảnh.</p></div>'
  }
  <!-- POSE PIP: luôn nằm trong viewport camera, có thể ẩn và bật lại bằng nút bên dưới. -->
  ${state.camera.showPoseOverlay ? `<aside class="pose-camera-pip" aria-label="Pose mẫu đang chọn"><div class="pose-camera-pip-art">${poseSVG(state.people, pose.variant, state.background, state.style)}</div><span class="pose-camera-pip-title">${safe(pose.title)}</span><button class="pose-camera-pip-close" type="button" data-action="toggle-pose-overlay" aria-label="Ẩn pose mẫu" title="Ẩn mẫu">×</button></aside>` : ""}

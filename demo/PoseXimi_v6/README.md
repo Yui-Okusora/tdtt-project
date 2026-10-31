@@ -21,6 +21,7 @@
    ```
 
    Trên Windows, macOS hoặc Linux đều dùng Node.js 20+; `python -m http.server` không có API đăng nhập.
+
 3. Mở **http://localhost:5500/**; không mở file bằng `file://`.
 4. Chọn **Đăng ký (Sign up)** để tạo tài khoản thực trong backend local; dùng **Log in** để đăng nhập hoặc **Khách** để xem thử.
 
@@ -90,7 +91,6 @@ Các API giữ nguyên như v3:
 
 **Giới hạn demo:** PWA có backend đăng ký/đăng nhập local, nhưng chưa có xác thực sẵn sàng production; AI ghép ảnh và nhận diện toàn thân vẫn cần backend. Album chỉ lưu trên thiết bị, không có đồng bộ tài khoản. Ảnh được tải/chụp và duyệt trong trình duyệt có thể mất khi xóa dữ liệu web.
 
-
 ## Bản cập nhật ngày 30/10/2026 — Đăng ký, chỉnh pose và đổi theme
 
 - **Đăng ký (Sign up):** màn hình riêng; kiểm tra tên người dùng, email, mật khẩu ít nhất 8 ký tự, 1 chữ hoa và xác nhận khớp. Trùng tên/email được backend kiểm tra.
@@ -157,7 +157,6 @@ node server.mjs
 
 Mở `http://localhost:5500`, thử bằng tài khoản khách. Vào `◐ Giao diện` để đổi palette/font, vào Home → bước 03 để đổi Style và xem bộ ảnh ở bước 02. Nếu bản cài trên điện thoại hiển thị giao diện cũ, cần cập nhật service worker (`Application → Service Workers`) hoặc tải lại sau khi đã kích hoạt cache mới. Không xóa dữ liệu trang nếu chưa sao lưu ảnh trong Library.
 
-
 ## PoseXimi_v4 — Logo, Icon Tabler, Hướng dẫn nhanh đúng nhóm
 
 - **Logo mới:** giữ nguyên hình Px gradient do chủ dự án cung cấp, xuất thành `assets/poseximi-logo.png` và icon PWA 192/512/maskable/Apple Touch.
@@ -178,7 +177,6 @@ Mở `http://localhost:5500`, trong Chrome `F12` → `Ctrl+Shift+M` → đặt `
 ### Test nhanh
 
 Chọn 1, 2, 3, 4 người lần lượt với mỗi style và kiểm tra chỉ có một ảnh hướng dẫn tương ứng. Sau đó đổi palette/font, mở menu khóa, thử camera và thư viện. Các icon Tabler chính thức yêu cầu kết nối mạng lần đầu; SVG dự phòng luôn có sẵn.
-
 
 ## Bản sửa v5 — Khắc phục không mở được menu Giao diện
 

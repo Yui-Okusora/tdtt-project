@@ -48,24 +48,24 @@ output/
 
 Các cột (cả JSON lẫn CSV):
 
-| Cột | Ý nghĩa |
-|---|---|
-| `id` | số nguyên tăng dần, duy nhất |
-| `filename`, `path` | tên file, đường dẫn tương đối so với thư mục output |
-| `category`, `keywords` | thể loại / từ khoá đã dùng để tìm |
-| `image_url`, `source_page` | URL ảnh gốc, trang chứa ảnh |
-| `title`, `alt_text` | tiêu đề / mô tả đi kèm ảnh (dùng làm caption) |
-| `engine` | nguồn: `bing` / `duckduckgo` / `google` / `link` |
-| `width`, `height`, `format`, `bytes` | thông tin ảnh |
-| `md5`, `phash` | hash nội dung / perceptual hash (hex 64-bit) |
-| `scraped_at` | thời điểm cào (UTC, ISO 8601) |
+| Cột                                  | Ý nghĩa                                             |
+| ------------------------------------ | --------------------------------------------------- |
+| `id`                                 | số nguyên tăng dần, duy nhất                        |
+| `filename`, `path`                   | tên file, đường dẫn tương đối so với thư mục output |
+| `category`, `keywords`               | thể loại / từ khoá đã dùng để tìm                   |
+| `image_url`, `source_page`           | URL ảnh gốc, trang chứa ảnh                         |
+| `title`, `alt_text`                  | tiêu đề / mô tả đi kèm ảnh (dùng làm caption)       |
+| `engine`                             | nguồn: `bing` / `duckduckgo` / `google` / `link`    |
+| `width`, `height`, `format`, `bytes` | thông tin ảnh                                       |
+| `md5`, `phash`                       | hash nội dung / perceptual hash (hex 64-bit)        |
+| `scraped_at`                         | thời điểm cào (UTC, ISO 8601)                       |
 
 Chạy lại vào cùng thư mục output sẽ **nối tiếp**: ảnh đã có không bị tải lại, `id` tiếp tục tăng.
 
 ## Cơ chế chính
 
-- **Từ khoá cấm**: so khớp không phân biệt hoa/thường và dấu tiếng Việt, trên tiêu đề, alt text, URL ảnh và URL trang nguồn. Ảnh dính từ cấm bị loại *trước khi tải*.
-- **Chống trùng ảnh** (3 lớp): URL → MD5 nội dung → perceptual hash (pHash, khoảng cách Hamming ≤ `--hash-threshold`). Ảnh cùng hình nhưng khác kích thước/chất lượng cũng bị loại. Tăng ngưỡng nếu muốn loại ảnh *giống* nhau mạnh tay hơn, đặt `0` nếu chỉ muốn loại ảnh y hệt.
+- **Từ khoá cấm**: so khớp không phân biệt hoa/thường và dấu tiếng Việt, trên tiêu đề, alt text, URL ảnh và URL trang nguồn. Ảnh dính từ cấm bị loại _trước khi tải_.
+- **Chống trùng ảnh** (3 lớp): URL → MD5 nội dung → perceptual hash (pHash, khoảng cách Hamming ≤ `--hash-threshold`). Ảnh cùng hình nhưng khác kích thước/chất lượng cũng bị loại. Tăng ngưỡng nếu muốn loại ảnh _giống_ nhau mạnh tay hơn, đặt `0` nếu chỉ muốn loại ảnh y hệt.
 - **Chống bị chặn**: xoay User-Agent và session (cookie), giãn cách theo host có jitter ngẫu nhiên, retry + backoff mũ (tôn trọng `Retry-After`), Referer theo trang nguồn khi tải ảnh, hỗ trợ xoay proxy. Gặp captcha/403/429 ở một engine thì engine đó bị tắt tạm cho thể loại hiện tại và app dùng engine còn lại.
 - **Nguồn tìm ảnh**: Bing (ổn định nhất) + DuckDuckGo + Google (best-effort, Google hay ra captcha nên có thể bị tắt tự động). Không cần API key, không dùng model AI.
 

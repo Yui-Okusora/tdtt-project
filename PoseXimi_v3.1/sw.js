@@ -57,8 +57,8 @@ self.addEventListener("activate", (event) =>
         keys
           .filter(
             (k) =>
-              (k.startsWith("poselab-pwa-") || k.startsWith("poseximi-pwa-"))
-              && k !== VERSION,
+              (k.startsWith("poselab-pwa-") || k.startsWith("poseximi-pwa-")) &&
+              k !== VERSION,
           )
           .map((k) => caches.delete(k)),
       );
@@ -73,9 +73,9 @@ self.addEventListener("fetch", (event) => {
   const request = event.request,
     url = new URL(request.url);
   if (
-    request.method !== "GET"
-    || url.origin !== self.location.origin
-    || url.pathname.includes("/api/")
+    request.method !== "GET" ||
+    url.origin !== self.location.origin ||
+    url.pathname.includes("/api/")
   )
     return;
   if (request.mode !== "navigate" && !paths.has(url.pathname)) return;
@@ -89,10 +89,10 @@ self.addEventListener("fetch", (event) => {
       } catch {
         const saved = await cache.match(request, { ignoreSearch: true });
         return (
-          saved
-          || (request.mode === "navigate" ?
-            await cache.match("./index.html")
-          : Response.error())
+          saved ||
+          (request.mode === "navigate"
+            ? await cache.match("./index.html")
+            : Response.error())
         );
       }
     })(),

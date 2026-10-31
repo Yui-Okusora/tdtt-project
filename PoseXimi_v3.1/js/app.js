@@ -95,8 +95,8 @@ function setSidebarOpen(open) {
   );
   sidebarBackdrop.hidden = !open;
   if (
-    !open
-    && document.querySelector("#sidebar")?.contains(document.activeElement)
+    !open &&
+    document.querySelector("#sidebar")?.contains(document.activeElement)
   )
     sidebarToggle.focus();
 }
@@ -127,15 +127,12 @@ function checkCredentials(showError = false) {
     node.classList.toggle("is-valid", valid);
     node.classList.toggle(
       "is-invalid",
-      !valid
-        && (showError
-          || (rule === "username" ? username : password).length > 0),
+      !valid &&
+        (showError || (rule === "username" ? username : password).length > 0),
     );
     node.textContent =
-      (valid ? "✓ "
-      : valid === false && showError ? "✕ "
-      : "○ ")
-      + {
+      (valid ? "✓ " : valid === false && showError ? "✕ " : "○ ") +
+      {
         username: "Tên đăng nhập ít nhất 3 ký tự",
         length: "Mật khẩu ít nhất 8 ký tự",
         uppercase: "Mật khẩu có ít nhất 1 chữ in hoa (A–Z)",
@@ -218,9 +215,9 @@ async function processFile(file) {
     } else return;
     render();
     toast(
-      result.resized ?
-        `Đã thêm ảnh và tự thu nhỏ về ${result.width} × ${result.height}px.`
-      : "Đã thêm ảnh thành công.",
+      result.resized
+        ? `Đã thêm ảnh và tự thu nhỏ về ${result.width} × ${result.height}px.`
+        : "Đã thêm ảnh thành công.",
     );
   } catch (error) {
     toast(error.message || "Không đọc được ảnh.");
@@ -345,9 +342,9 @@ async function cameraStart(facing) {
     render();
   } catch (error) {
     toast(
-      error.name === "NotAllowedError" ?
-        "Chưa cấp quyền camera."
-      : error.message || "Không thể mở camera.",
+      error.name === "NotAllowedError"
+        ? "Chưa cấp quyền camera."
+        : error.message || "Không thể mở camera.",
     );
   }
 }
@@ -463,9 +460,9 @@ main.addEventListener("click", async (event) => {
       break;
     case "workspace-details":
       state.workspaceExpanded =
-        state.workspaceExpanded === button.dataset.workspace ?
-          null
-        : button.dataset.workspace;
+        state.workspaceExpanded === button.dataset.workspace
+          ? null
+          : button.dataset.workspace;
       render();
       break;
     case "upload-input":
@@ -623,8 +620,8 @@ document.addEventListener("keydown", (event) => {
 });
 document.addEventListener("click", (event) => {
   if (
-    workspace.classList.contains("sidebar-open")
-    && !event.target.closest("#sidebar, #sidebarToggle")
+    workspace.classList.contains("sidebar-open") &&
+    !event.target.closest("#sidebar, #sidebarToggle")
   )
     setSidebarOpen(false);
 });

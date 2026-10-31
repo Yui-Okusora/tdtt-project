@@ -13,55 +13,52 @@ export function poseSVG(
     nature: ["#edf1df", "#c9dabb", "#a6c3a9"],
   }[background] || ["#fbeaec", "#ebcbd5", "#dcaebf"];
   const shirts =
-    style === "Fashion" ?
-      ["#842342", "#fff1ee", "#40202e", "#ea9eaf", "#b65977", "#7d5568"]
-    : style === "JoJo" ?
-      ["#90314a", "#31232f", "#cc5577", "#5d395a", "#c3926d", "#9d4c6c"]
-    : ["#b45477", "#f8e4d9", "#8e6a76", "#e9b9ad", "#aa7b93", "#f2cad9"];
+    style === "Fashion"
+      ? ["#842342", "#fff1ee", "#40202e", "#ea9eaf", "#b65977", "#7d5568"]
+      : style === "JoJo"
+        ? ["#90314a", "#31232f", "#cc5577", "#5d395a", "#c3926d", "#9d4c6c"]
+        : ["#b45477", "#f8e4d9", "#8e6a76", "#e9b9ad", "#aa7b93", "#f2cad9"];
   const n = Math.max(1, Math.min(4, Number(people)));
   const spacing =
-    n <= 2 ? 133
-    : n === 3 ? 117
-    : n === 4 ? 95
-    : n === 5 ? 79
-    : 67;
-  const scale =
-    n >= 5 ? 0.78
-    : n === 4 ? 0.86
-    : n === 3 ? 0.95
-    : 1.12;
+    n <= 2 ? 133 : n === 3 ? 117 : n === 4 ? 95 : n === 5 ? 79 : 67;
+  const scale = n >= 5 ? 0.78 : n === 4 ? 0.86 : n === 3 ? 0.95 : 1.12;
   const figures = Array.from({ length: n }, (_, index) => {
     const x = 240 + (index - (n - 1) / 2) * spacing;
-    const y =
-      n === 1 ? 4
-      : index % 2 === 0 && variant === 3 ? 0
-      : 7;
+    const y = n === 1 ? 4 : index % 2 === 0 && variant === 3 ? 0 : 7;
     const rotation =
-      variant === 2 ?
-        index % 2 ?
-          7
-        : -7
-      : variant === 5 ?
-        index % 2 ?
-          -10
-        : 9
-      : 0;
+      variant === 2
+        ? index % 2
+          ? 7
+          : -7
+        : variant === 5
+          ? index % 2
+            ? -10
+            : 9
+          : 0;
     const armLeft =
-      variant === 1 || variant === 4 ? "M-18 14 Q-44 -18 -53 -11"
-      : variant === 2 || variant === 5 ? "M-19 15 Q-47 -10 -42 -33"
-      : "M-19 18 Q-39 39 -35 59";
+      variant === 1 || variant === 4
+        ? "M-18 14 Q-44 -18 -53 -11"
+        : variant === 2 || variant === 5
+          ? "M-19 15 Q-47 -10 -42 -33"
+          : "M-19 18 Q-39 39 -35 59";
     const armRight =
-      variant === 1 || variant === 4 ? "M18 14 Q45 -17 52 -10"
-      : variant === 2 || variant === 5 ? "M18 15 Q48 -5 42 -38"
-      : "M18 18 Q38 39 36 56";
+      variant === 1 || variant === 4
+        ? "M18 14 Q45 -17 52 -10"
+        : variant === 2 || variant === 5
+          ? "M18 15 Q48 -5 42 -38"
+          : "M18 18 Q38 39 36 56";
     const legLeft =
-      variant === 3 ? "M-9 72 Q-25 100 -36 126"
-      : variant === 0 ? "M-9 72 L-22 126"
-      : "M-10 72 L-14 128";
+      variant === 3
+        ? "M-9 72 Q-25 100 -36 126"
+        : variant === 0
+          ? "M-9 72 L-22 126"
+          : "M-10 72 L-14 128";
     const legRight =
-      variant === 3 ? "M9 72 Q26 101 33 126"
-      : variant === 0 ? "M9 72 L23 126"
-      : "M10 72 L16 128";
+      variant === 3
+        ? "M9 72 Q26 101 33 126"
+        : variant === 0
+          ? "M9 72 L23 126"
+          : "M10 72 L16 128";
     const color = shirts[index % shirts.length];
     return `<g transform="translate(${x} ${155 + y}) scale(${scale}) rotate(${rotation})">
       <ellipse cx="0" cy="129" rx="40" ry="6" fill="#693047" opacity=".11"/>
@@ -72,9 +69,7 @@ export function poseSVG(
       <rect x="-7" y="-7" width="14" height="19" rx="6" fill="#e2aa90"/>
       <ellipse cx="0" cy="-31" rx="24" ry="29" fill="#f1c4a7"/>
       <path d="M-25 -36 Q-26 -69 1 -65 Q23 -62 24 -34 Q13 -45 5 -51 Q-13 -42 -25 -36" fill="${
-        index % 3 === 0 ? "#483646"
-        : index % 3 === 1 ? "#675044"
-        : "#332f42"
+        index % 3 === 0 ? "#483646" : index % 3 === 1 ? "#675044" : "#332f42"
       }"/>
       <circle cx="-7" cy="-30" r="1.5" fill="#55454a"/><circle cx="7" cy="-30" r="1.5" fill="#55454a"/>
       <path d="M-5 -19 Q0 -15 5 -19" fill="none" stroke="#b47779" stroke-width="1.6" stroke-linecap="round"/>

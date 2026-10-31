@@ -24,9 +24,11 @@ async function transaction(mode, value) {
       );
       const store = tx.objectStore(STORE),
         req =
-          mode === "read" ? store.getAll()
-          : mode === "put" ? store.put(value)
-          : store.delete(value);
+          mode === "read"
+            ? store.getAll()
+            : mode === "put"
+              ? store.put(value)
+              : store.delete(value);
       req.onsuccess = () => ok(req.result);
       req.onerror = () => bad(req.error);
       tx.onerror = () => bad(tx.error);

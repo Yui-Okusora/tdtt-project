@@ -9,9 +9,7 @@ export function steps() {
     .map(
       (name, i) =>
         `${i ? '<span class="step-line"></span>' : ""}<span class="step ${
-          i === idx ? "active"
-          : i < idx ? "done"
-          : ""
+          i === idx ? "active" : i < idx ? "done" : ""
         }"><span class="step-index">${i < idx ? "✓" : i + 1}</span>${safe(name)}</span>`,
     )
     .join("")}</div>`;

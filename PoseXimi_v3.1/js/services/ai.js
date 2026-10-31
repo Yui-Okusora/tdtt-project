@@ -21,9 +21,8 @@ async function postJSON(
     timeoutMs,
   );
   // Cancels on user action or timeout.
-  const combined =
-    AbortSignal.any ?
-      AbortSignal.any([timeout.signal, ...(signal ? [signal] : [])])
+  const combined = AbortSignal.any
+    ? AbortSignal.any([timeout.signal, ...(signal ? [signal] : [])])
     : timeout.signal;
   const onAbort = () =>
     timeout.abort(signal?.reason || new Error("Người dùng đã hủy."));
@@ -39,9 +38,9 @@ async function postJSON(
     });
     if (!response.ok)
       throw new AIBackendError(
-        response.status === 404 ?
-          "Backend AI chưa được kết nối (/api/pose-preview)."
-        : `Backend phản hồi mã HTTP ${response.status}.`,
+        response.status === 404
+          ? "Backend AI chưa được kết nối (/api/pose-preview)."
+          : `Backend phản hồi mã HTTP ${response.status}.`,
       );
     const data = await response.json();
     if (!data || typeof data !== "object")
@@ -80,8 +79,8 @@ export async function previewPose({
   const image = data.imageUrl || data.imageBase64 || data.previewUrl;
   // Refuse javascript: and invalid URLs; allow local API image path, https and data:image.
   if (
-    typeof image !== "string"
-    || !/^(https?:\/\/|\/[^/]|data:image\/(png|jpeg|webp);base64,)/.test(image)
+    typeof image !== "string" ||
+    !/^(https?:\/\/|\/[^/]|data:image\/(png|jpeg|webp);base64,)/.test(image)
   )
     throw new AIBackendError("API không trả về imageUrl/imageBase64 hợp lệ.");
   return image;
@@ -99,8 +98,8 @@ export async function loadRecommendations({
       { peopleCount: people, style, backgroundImage, peopleImage },
       { timeoutMs: 12000 },
     );
-    return Array.isArray(data.poseIds) ?
-        data.poseIds.filter((s) => typeof s === "string").slice(0, 6)
+    return Array.isArray(data.poseIds)
+      ? data.poseIds.filter((s) => typeof s === "string").slice(0, 6)
       : null;
   } catch {
     return null;

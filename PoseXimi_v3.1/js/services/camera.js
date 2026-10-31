@@ -13,9 +13,9 @@ function readZoom(stream) {
   const track = stream.getVideoTracks()[0];
   const caps = track?.getCapabilities?.() || {};
   if (
-    caps.zoom
-    && Number.isFinite(caps.zoom.min)
-    && Number.isFinite(caps.zoom.max)
+    caps.zoom &&
+    Number.isFinite(caps.zoom.min) &&
+    Number.isFinite(caps.zoom.max)
   ) {
     state.camera.zoomSupported = true;
     state.camera.minZoom = caps.zoom.min;
