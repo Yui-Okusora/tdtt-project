@@ -22,7 +22,7 @@ export function poseSVG(people = state.people, variant = 0, background = state.b
     const color = shirts[index % shirts.length];
     return `<g transform="translate(${x} ${155 + y}) scale(${scale}) rotate(${rotation})">
       <ellipse cx="0" cy="129" rx="40" ry="6" fill="#693047" opacity=".11"/>
-      <path d="${legLeft} M${index % 2 ? 9 : 8} 72 ${legRight.slice(5)}" fill="none" stroke="#533440" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="${legLeft} M${index % 2 ? 9 : 8} 72${legRight.replace(/^M\S+\s+\S+/, '')}" fill="none" stroke="#533440" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="${armLeft} ${armRight}" fill="none" stroke="#e2aa90" stroke-width="13" stroke-linecap="round"/>
       <rect x="-23" y="5" width="46" height="74" rx="18" fill="${color}" />
       <path d="M-15 66 Q0 73 16 66" fill="none" stroke="#fff" stroke-opacity=".17" stroke-width="3"/>

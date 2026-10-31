@@ -25,7 +25,7 @@
 .retake-dismiss{width:30px;height:30px;border:1px solid var(--stroke);border-radius:50%;background:var(--surface);color:var(--text-main);font-size:20px;cursor:pointer;flex-shrink:0}
 
 /* Visual dropdown: gradients and real live font samples per option. */
-.appearance-modal{max-width:650px;width:min(650px,96vw)}
+.appearance-modal{width:100%;max-width:650px}
 .appearance-editor{display:grid;gap:18px;margin:19px 0}
 .appearance-picker-label{font-size:13px;font-weight:800;margin:0 0 8px;color:var(--text-main)}
 .appearance-dropdown{position:relative}
