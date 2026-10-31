@@ -6,7 +6,7 @@
 import {state,poseList,currentPose,inputsReady,canEnter,pageNames} from './state.js';
 import {iconMarkup,decorateIcons} from './icons.js';
 import {auditFonts} from './services/font-safety.js';
-import {$,safe,toast,showModal,closeModal,dateDisplay,loadingModal} from './ui.js';
+import {$,safe,toast,showModal,closeModal,dateDisplay,loadingModal, albumTitle} from './ui.js';
 import {renderHome} from './views/home.js';
 import {renderPoses} from './views/poses.js';
 import {renderCapture} from './views/capture.js';
@@ -137,7 +137,7 @@ async function processFile(file){if(!file)return;
    const result=await decodeFile(file);
    if(target==='background'){state.backgroundPhoto=result.dataUrl;resetRecommendations();}
    else if(target==='group'){state.groupPhoto=result.dataUrl;resetRecommendations();}
-   else if(target==='capture'&&state.page==='capture'){state.capturedPhoto=result.dataUrl;state.retakeNotes=[];state.retakeTitle='';stopCamera();}
+   else if(target==='capture'&&state.page==='capture'){state.capturedPhoto=result.dataUrl;state.photoName='';state.retakeNotes=[];state.retakeTitle='';stopCamera();}
    else return;
    render();toast(result.resized?`Đã thêm ảnh và tự thu nhỏ về ${result.width} × ${result.height}px.`:'Đã thêm ảnh thành công.');
  }catch(error){toast(error.message||'Không đọc được ảnh.');}
@@ -182,12 +182,12 @@ async function showPosePreview(id){
  }finally{clearTimeout(slowTimer);if(state.pendingPreview===ctrl)state.pendingPreview=null;}
 }
 function cancelPreview(){state.pendingPreview?.abort();state.pendingPreview=null;closeModal();}
-function selectPose(id){if(!poseList().some(p=>p.id===id))return;cancelPreview();state.poseId=id;state.capturedPhoto=null;state.camera.showPoseOverlay=true;state.retakeNotes=[];state.retakeTitle='';navigate('capture')}
+function selectPose(id){if(!poseList().some(p=>p.id===id))return;cancelPreview();state.poseId=id;state.capturedPhoto=null;state.photoName='';state.camera.showPoseOverlay=true;state.retakeNotes=[];state.retakeTitle='';navigate('capture')}
 
 // 6) Final camera: flip front/back, hardware zoom, photo shutter.
 async function cameraStart(facing){try{await openCamera(facing);render();}catch(error){toast(error.name==='NotAllowedError'?'Chưa cấp quyền camera.':error.message||'Không thể mở camera.') }}
 async function cameraFlip(){try{await flipCamera();render()}catch(error){toast('Không đổi được camera: '+(error.message||'camera không hỗ trợ.'))}}
-function shutter(){try{state.capturedPhoto=captureCamera().dataUrl;state.retakeNotes=[];state.retakeTitle='';stopCamera();render();toast('Đã chụp ảnh nhóm.')}catch(error){toast(error.message)}}
+function shutter(){try{state.capturedPhoto=captureCamera().dataUrl;state.photoName='';state.retakeNotes=[];state.retakeTitle='';stopCamera();render();toast('Đã chụp ảnh nhóm.')}catch(error){toast(error.message)}}
 
 // 6b) When Retake is requested, navigate straight to camera and pin pose advice beside it.
 function retakeWithNotes(){
@@ -204,14 +204,15 @@ async function refreshLibrary(){const token=++state.libraryToken;state.libraryLo
  finally{if(state.page==='library'&&state.libraryToken===token){state.libraryLoading=false;render();}}
 }
 async function approve(){if(state.busy||!state.capturedPhoto||!currentPose())return;
- state.busy=true;render();const pose=currentPose(),album={id:crypto.randomUUID?.()||String(Date.now()),createdAt:Date.now(),people:state.people,style:state.style,poseId:pose.id,poseTitle:pose.title,photos:[state.capturedPhoto]};
- try{await storeAlbum(album);state.capturedPhoto=null;toast('Đã duyệt và lưu ảnh.');navigate('library')}
+ state.busy=true;render();const pose=currentPose(),album={id:crypto.randomUUID?.()||String(Date.now()),createdAt:Date.now(),people:state.people,style:state.style,poseId:pose.id,poseTitle:pose.title,name:state.photoName.trim().slice(0,60),photos:[state.capturedPhoto]};
+ try{await storeAlbum(album);state.capturedPhoto=null;state.photoName='';toast('Đã duyệt và lưu ảnh.');navigate('library')}
  catch(error){console.error(error);toast('Không thể lưu, bộ nhớ có thể đã đầy.')}finally{state.busy=false;if(state.page==='result')render()}
 }
 function albumById(id){return state.albums.find(a=>a.id===id)}
-function viewAlbum(id){const a=albumById(id);if(!a)return;showModal(`<h2>${safe(a.poseTitle)}</h2><p>${dateDisplay(a.createdAt)} · ${a.people} người</p>${photoGrid(a.photos,'modal-image-grid')}<div class="modal-actionbar"><button class="btn btn-outline" data-action="download-album" data-id="${safe(a.id)}">Tải ảnh</button><button class="btn btn-primary" data-action="modal-close">Đóng</button></div>`)}
-function downloadAlbum(id){const a=albumById(id);if(!a)return;const link=document.createElement('a');link.href=a.photos[0];link.download=`PoseXimi_${id.slice(0,8)}.jpg`;document.body.appendChild(link);link.click();link.remove();}
-function confirmDelete(id){const a=albumById(id);if(!a)return;showModal(`<h2>Xóa bộ ảnh?</h2><p>“${safe(a.poseTitle)}” sẽ bị xóa khỏi thiết bị này. Không thể hoàn tác.</p><div class="modal-actionbar"><button class="btn btn-outline" data-action="modal-close">Hủy</button><button class="btn btn-danger" data-action="confirm-delete" data-id="${safe(id)}">Xóa ảnh</button></div>`)}
+function viewAlbum(id){const a=albumById(id);if(!a)return;showModal(`<h2>${safe(albumTitle(a))}</h2><p>${dateDisplay(a.createdAt)} · ${a.people} người</p>${photoGrid(a.photos,'modal-image-grid')}<div class="modal-actionbar"><button class="btn btn-outline" data-action="download-album" data-id="${safe(a.id)}">Tải ảnh</button><button class="btn btn-primary" data-action="modal-close">Đóng</button></div>`)}
+function downloadAlbum(id){const a=albumById(id);if(!a)return;const link=document.createElement('a');link.href=a.photos[0];const slug=albumTitle(a).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').replace(/[^a-zA-Z0-9]+/g,'_').replace(/^_+|_+$/g,'')||id.slice(0,8);
+link.download=`PoseXimi_${slug}.jpg`;document.body.appendChild(link);link.click();link.remove();}
+function confirmDelete(id){const a=albumById(id);if(!a)return;showModal(`<h2>Xóa bộ ảnh?</h2><p>“${safe(albumTitle(a))}” sẽ bị xóa khỏi thiết bị này. Không thể hoàn tác.</p><div class="modal-actionbar"><button class="btn btn-outline" data-action="modal-close">Hủy</button><button class="btn btn-danger" data-action="confirm-delete" data-id="${safe(id)}">Xóa ảnh</button></div>`)}
 function modalClose(){cancelPreview();stopInputCamera()}
 
 // 8) Delegate interactions from screen components. Every visible button has a handler.
@@ -244,7 +245,7 @@ main.addEventListener('click',async event=>{
  case 'delete-album':confirmDelete(button.dataset.id);break;
  }
 });
-main.addEventListener('input',async event=>{if(event.target.id!=='zoomCamera')return;
+main.addEventListener('input',async event=>{if(event.target.id==='photoNameInput'){state.photoName=event.target.value;return}if(event.target.id!=='zoomCamera')return;
  try{if(await setZoom(event.target.value))$('#zoomAmount').textContent=state.camera.zoom.toFixed(1)+'×'}catch{toast('Camera không hỗ trợ thu phóng tại mức này.')}});
 $('#modalRoot').addEventListener('click',async event=>{
  if(event.target.matches('[data-backdrop]'))return modalClose();

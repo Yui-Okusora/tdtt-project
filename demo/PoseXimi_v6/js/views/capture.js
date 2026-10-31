@@ -11,16 +11,16 @@ export function renderCapture(){
  <button class="retake-dismiss" type="button" data-action="dismiss-retake-notes" aria-label="Ẩn hướng dẫn chụp lại">×</button></div>
  <ul>${state.retakeNotes.map(tip=>`<li>${safe(tip)}</li>`).join('')}</ul>
  </aside>`:''}
- <div id="captureDropzone" class="capture-stage camera-large ${photo&&!live?'has-photo':''}">
+ <div class="camera-stage-wrap"><div id="captureDropzone" class="capture-stage camera-large ${photo&&!live?'has-photo':''}">
  <span class="camera-watermark">P · POSEXIMI</span>
  ${live?`<video id="liveVideo" class="${state.camera.facing==='user'?'front-camera':''}" autoplay muted playsinline aria-label="Camera đang hoạt động"></video>`:photo?`<img class="existing-photo" src="${photo}" alt="Ảnh nhóm sau khi chụp" />`:'<div class="camera-placeholder"><div class="big-camera">◎</div><h3>Chụp trọn khoảnh khắc</h3><p>Cho tất cả người tham gia vào khung hình, sau đó bấm mở camera hoặc tải ảnh.</p></div>'}
  <!-- POSE PIP: luôn nằm trong viewport camera, có thể ẩn và bật lại bằng nút bên dưới. -->
  ${state.camera.showPoseOverlay?`<aside class="pose-camera-pip" aria-label="Pose mẫu đang chọn"><div class="pose-camera-pip-art">${poseSVG(state.people,pose.variant,state.background,state.style)}</div><span class="pose-camera-pip-title">   </span></aside>`:''}
  </div>
  <!-- Camera controls: show/hide sample, flip, zoom, shutter, upload. -->
- <div class="camera-toolbar"><button class="btn btn-soft" type="button" data-action="toggle-pose-overlay" aria-pressed="${state.camera.showPoseOverlay}">${state.camera.showPoseOverlay?'Ẩn pose mẫu':'Hiện pose mẫu'}
+ <div class="camera-toolbar"><button class="btn btn-soft" type="button" data-action="toggle-pose-overlay" aria-pressed="${state.camera.showPoseOverlay}">${state.camera.showPoseOverlay?'Ẩn pose mẫu':'Hiện pose mẫu'}</button>
  ${live?`<button class="btn btn-soft" type="button" data-action="flip-camera" aria-label="Đổi camera trước hoặc sau">⇄ Đổi camera</button><button class="btn btn-primary shutter-button" type="button" data-action="capture-photo">Chụp ảnh</button><button class="btn btn-outline" type="button" data-action="stop-camera">Tắt camera</button>`:`<button class="btn btn-primary" type="button" data-action="open-camera">Mở camera</button>`}
- </div>
+ </div></div>
  ${live?`<div class="camera-zoom"><label for="zoomCamera">Thu phóng camera</label><input type="range" id="zoomCamera" min="${state.camera.minZoom}" max="${state.camera.maxZoom}" value="${state.camera.zoom}" step="0.1" ${state.camera.zoomSupported?'':'disabled'} aria-describedby="zoomHelp"/><span id="zoomAmount">${state.camera.zoom.toFixed(1)}×</span><small id="zoomHelp">${state.camera.zoomSupported?'Dùng zoom quang học/kỹ thuật số do camera hỗ trợ.':'Trình duyệt hoặc camera này không cung cấp khả năng zoom.'}</small></div>`:''}
  </div><div class="continue-bar"><div><strong>${photo?'Ảnh sẵn sàng để đánh giá':'Hãy chụp'}</strong><span>${state.people} người . ${state.style}</span></div><button class="btn btn-primary" type="button" data-action="go-results" ${photo?'':'disabled'}>Xem kết quả</button></div>`;
 }

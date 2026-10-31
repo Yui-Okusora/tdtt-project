@@ -120,8 +120,8 @@
 @media(prefers-reduced-motion:reduce){.workspace-menu-tile,.ai-progress-track span{animation:none;transition:none}}
 /* Keep phone shutter and lens-switching buttons INSIDE the visible camera viewport. */
 @media(max-width:760px){
- .camera-workspace{position:relative}
- .camera-toolbar{position:relative;z-index:4;margin:-106px 8px 0;padding:9px;background:#251820ce;border-radius:14px;box-shadow:0 9px 24px #170b1390;backdrop-filter:blur(10px)}
+ .camera-workspace,.camera-stage-wrap{position:relative}
+ .camera-toolbar{position:absolute;left:8px;right:8px;bottom:8px;z-index:4;margin:0;padding:9px;background:#251820ce;border-radius:14px;box-shadow:0 9px 24px #170b1390;backdrop-filter:blur(10px)}
  .camera-toolbar .btn{min-height:41px;box-shadow:none}
  .camera-zoom{position:absolute;top:82px;left:19px;right:19px;z-index:4;max-width:450px;background:#fff7f2eb;backdrop-filter:blur(8px);padding:8px 11px;margin:0}
  .camera-zoom small{display:none}
