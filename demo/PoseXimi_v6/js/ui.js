@@ -22,3 +22,4 @@ export function loadingModal(title='Đang xử lý ảnh',text='AI đang tạo b
 }
 // Make PWA installation instructions reusable without coupling pwa.js to the app bundle.
 if(typeof window!=='undefined') window.PoseXimiShowModal=showModal;
+export const albumTitle=a=>(a.name&&a.name.trim())||`Ảnh ${new Date(a.createdAt).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}`;

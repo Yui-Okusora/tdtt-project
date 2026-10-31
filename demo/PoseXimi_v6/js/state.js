@@ -10,7 +10,7 @@ export const state = {
   inputCameraKind: null, inputCameraStream: null, fileTarget: 'group',
   pendingPreview: null, previewImage: null,
   workspaceExpanded: null,
-  retakeNotes: [], retakeTitle: "",
+  retakeNotes: [], retakeTitle: "", photoName: "",
 };
 export function poseList() {
   const key = state.people === 1 ? 'solo' : state.people === 2 ? 'duo' : state.people === 3 ? 'trio' : 'group';
