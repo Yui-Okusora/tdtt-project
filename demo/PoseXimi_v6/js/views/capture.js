@@ -3,8 +3,8 @@ import {state,currentPose} from '../state.js';import {safe} from '../ui.js';impo
 export function renderCapture(){
  const pose=currentPose();if(!pose)return `${heading('CAMERA','Hãy chọn pose trước.','Bước này chỉ mở sau khi đã chọn tư thế.')}`;
  const photo=state.capturedPhoto,live=!!state.camera.stream;
- return `${heading('CAMERA & UPLOAD','Studio chụp ảnh',`Đang thực hiện: ${pose.title} · ${state.people} người. Đối chiếu ô pose mẫu nổi trong camera để tạo dáng.`)}
- <div class="camera-workspace content-card"><div class="section-heading"><h2>Máy ảnh của bạn</h2><span class="tag-chip">${photo?'✓ Ảnh đã sẵn sàng':live?'● Camera trực tiếp':'Chưa mở camera'}</span></div>
+ return `${heading('','Studio chụp ảnh',`Đang thực hiện: ${pose.title} · ${state.people} người. Đối chiếu ô pose mẫu nổi trong camera để tạo dáng.`)}
+ <div class="camera-workspace content-card"><div class="section-heading"><h2>Máy ảnh</h2><span class="tag-chip">${photo?'✓ Ảnh đã sẵn sàng':live?'● Camera trực tiếp':'Chưa mở camera'}</span></div>
  <!-- RETAKE NOTES: appear beside the camera ONLY after Retake is pressed on the Result page. -->
  ${state.retakeNotes.length?`<aside class="retake-coaching" role="status" aria-live="polite">
  <div class="retake-coaching-head"><div><span class="retake-coaching-kicker">✦ HƯỚNG DẪN CHỤP LẠI</span><h3>${safe(state.retakeTitle)}</h3></div>
