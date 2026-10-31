@@ -1,0 +1,155 @@
+/* ===============================================================
+   PoseXimi v3.1 · GLOBAL THEME SKIN & QUICK GUIDE
+   Purpose: one token-based override for buttons, borders, cards,
+   forms and hover states. Layout properties are intentionally kept.
+   Add/change palette values in js/services/appearance.js only.
+   This stylesheet must be loaded LAST (after all legacy CSS).
+   =============================================================== */
+:root {
+  --skin-wash: color-mix(in srgb, var(--surface-soft) 63%, var(--surface));
+  --skin-border: color-mix(in srgb, var(--accent) 18%, var(--stroke));
+  --skin-ring: color-mix(in srgb, var(--accent) 26%, transparent);
+  --skin-hover: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  --skin-shadow: color-mix(in srgb, var(--accent) 11%, transparent);
+  --font-display-variation: normal;
+}
+
+/* General surfaces and text: page, frames, upload cards, menus and dialogs. */
+html,body,.workspace,.workspace-body,.main-content { color: var(--text-main); background-color:var(--page); }
+.login-view,.login-panel,.sidebar,.topbar,.content-card,.settings-card,.pose-card,.album-card,
+.capture-panel,.approval-bar,.single-next-action,.modal,.appearance-options,.appearance-current,
+.appearance-choice,.appearance-trigger,.input-photo-card,.slot-btn,.quick-guide-card {
+  border-color:var(--skin-border);
+}
+.login-panel,.sidebar,.topbar,.content-card,.settings-card,.pose-card,.album-card,.modal,
+.approval-bar,.single-next-action,.appearance-options,.appearance-choice,.appearance-trigger,
+.appearance-current,.slot-btn { background-color: var(--surface); color:var(--text-main); }
+.content-card,.pose-card,.album-card,.modal,.single-next-action,.settings-card {
+  box-shadow:0 8px 26px var(--skin-shadow);
+}
+.muted,.card-sub,.filter-hint,.capture-footnote,.page-head p,.comparison-caption small,
+.pose-meta p,.album-info p,.input-photo-copy span {color:var(--text-soft)}
+.page-head h1,h1,h2,h3,h4 {color:var(--text-main)}
+
+/* Primary actions use gradients, including their hover/focus feedback. */
+.btn-primary,.btn-primary:visited,#signupSubmit,#loginSubmit {
+  background:var(--button-gradient);color:white;border-color:var(--accent-strong);
+  box-shadow:0 8px 21px var(--skin-shadow);
+}
+.btn-primary:hover:not(:disabled),#signupSubmit:hover:not(:disabled),#loginSubmit:hover:not(:disabled) {
+  background:var(--button-gradient);filter:brightness(.92);box-shadow:0 11px 25px var(--skin-shadow);
+}
+.btn-soft { background:var(--surface-soft); color:var(--accent); border-color:var(--skin-border); }
+.btn-soft:hover:not(:disabled) {background:var(--skin-hover);color:var(--accent-strong)}
+.btn-outline,.btn-plain,.appearance-trigger {border-color:var(--skin-border);color:var(--accent);background:var(--surface)}
+.btn-outline:hover:not(:disabled),.btn-plain:hover:not(:disabled),.appearance-trigger:hover {background:var(--skin-hover);border-color:var(--accent)}
+.btn-danger {background:color-mix(in srgb,#e34f5d 11%,var(--surface));color:#aa233b}
+.btn:focus-visible,.appearance-choice:focus-visible,.quick-guide-thumb:focus-visible,
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
+  outline:3px solid var(--skin-ring);outline-offset:2px;
+}
+.icon-btn,.retake-dismiss {color:var(--accent)}
+.icon-btn:hover,.retake-dismiss:hover {background:var(--skin-hover)}
+
+/* Choice tiles, count options, pose cards and responsive workspace navigation. */
+.count-btn,.selection-tile,.background-tile,.slot-btn,.workspace-menu-tile {
+  border-color:var(--skin-border);background-color:var(--surface);color:var(--text-main);
+}
+.count-btn:hover,.selection-tile:hover,.background-tile:hover,.slot-btn:hover,.workspace-menu-tile:hover {
+  border-color:var(--accent);background:var(--skin-hover);
+}
+.count-btn.selected,.selection-tile.selected,.background-tile.selected,.slot-btn.selected,
+.appearance-choice.chosen {background:var(--surface-soft);border-color:var(--accent);color:var(--accent-strong)}
+.count-btn.selected {box-shadow:inset 0 0 0 1px var(--accent)}
+.selection-tile.selected {box-shadow:inset 0 0 0 1px var(--accent)}
+.selection-tile small,.quick-guide-help {color:var(--text-soft)}
+.selection-tile .style-symbol,.style-grid .style-symbol-image,.slot-thumbnail,.input-photo-preview {
+  background:var(--skin-wash);border-color:var(--skin-border);
+}
+.nav-item{color:var(--text-soft)}
+.nav-item.active,.nav-item:hover,.nav-item.nav-locked:hover {
+  background:var(--surface-soft);color:var(--accent);
+}
+.sidebar-toggle,.sidebar-toggle:hover,.sidebar-toggle[aria-expanded="true"] {
+  background:var(--skin-wash);color:var(--accent);border-color:var(--skin-border);
+}
+.sidebar-toggle:hover {filter:brightness(.97)}
+.sidebar,.topbar{border-color:var(--skin-border)}
+.workspace-brand .brand-name,.brand-period,.brand-mark,.nav-icon,.eyebrow,.login-kicker {color:var(--accent)}
+
+/* Accent gradients extend across panels, pill badges, helpers and borders. */
+.hero-banner {background:var(--hero-gradient)}
+.hero-monogram {background:var(--hero-gradient);color:var(--hero-ink)}
+.hero-monogram span {color:var(--accent)}
+.hero-copy h2,.hero-copy .eyebrow,.hero-copy p {color:var(--hero-ink)}
+.login-showcase {background:var(--login-gradient)}
+.avatar,.top-dot,.mini-badge,.tag-chip,.mini-promo,.empty-icon {
+  background:var(--surface-soft);color:var(--accent);
+}
+.continue-bar,.feedback-box,.image-guideline,.camera-zoom,.retake-coaching,.ready-tips,
+.quick-guide-list li,.workspace-hover-detail,.credential-box,.pwa-update-banner {
+  background:var(--skin-wash);border-color:var(--skin-border);color:var(--text-main);
+}
+.input-photo-card {border-color:var(--skin-border);background:var(--skin-wash)}
+.input-photo-card.has-image,.pose-card.chosen,.appearance-dropdown[open] .appearance-current {border-color:var(--accent)}
+.upload-empty-icon {border-color:var(--skin-border);color:var(--accent)}
+.start-card {background:var(--button-gradient)}
+.start-card p {color:color-mix(in srgb,white 85%,var(--accent))}
+.pill-status {background:var(--surface-soft);color:var(--accent)}
+.loading-view,.empty-view {background:var(--surface);border-color:var(--skin-border)}
+.loading-spinner {border-color:var(--surface-soft);border-top-color:var(--accent)}
+.ai-progress-track {background:var(--surface-soft)}
+.ai-progress-track span {background:var(--button-gradient)}
+.pose-card:hover,.album-card:hover {box-shadow:0 13px 29px var(--skin-shadow)}
+
+/* Form controls and feedback. Validation red remains semantic, not decorative. */
+.login-form input,.appearance-form select,input:not([type="file"]):not([type="checkbox"]),textarea {
+  background-color:var(--surface);border-color:var(--skin-border);color:var(--text-main);
+}
+.login-form input:focus,input:focus,textarea:focus {
+  border-color:var(--accent);box-shadow:0 0 0 3px var(--skin-ring);
+}
+.login-divider span {background:var(--surface);color:var(--text-soft)}
+.appearance-dropdown .appearance-choice:hover {background:var(--skin-hover);border-color:var(--accent)}
+.appearance-dots i{border-color:var(--skin-border)}
+.appearance-button-demo{display:inline-flex;border-radius:8px;padding:5px 9px;color:white;font-size:10px;font-weight:800}
+.appearance-choice-copy small{gap:8px}
+.appearance-dropdown .appearance-current {background:var(--surface)}
+.appearance-font-glyph {background:var(--surface-soft);color:var(--accent)}
+
+/* Brand selector specificity in the legacy layout is higher than the generic
+   body rules, so explicitly route every branding surface through the font token. */
+.workspace-brand .brand-name,.login-brand,.login-brand span,.hero-monogram {
+  font-family:var(--font-brand);
+}
+/* Display font selection: apply variation axes for Honk and Nabla. */
+.brand-name,.workspace-brand .brand-name,.login-brand,.login-brand span,.hero-monogram {
+  font-variation-settings:var(--font-display-variation);
+}
+/* Quick Guide – preserves the current right-column / mobile-in-flow card layout.
+   Full-length poses remain visible with object-fit:contain (not cropped). */
+.quick-guide-card .card-title-row {margin-bottom:12px}
+.quick-guide-feature {margin:0;position:relative;border:1px solid var(--skin-border);
+  border-radius:14px;overflow:hidden;background:var(--skin-wash)}
+.quick-guide-feature img{display:block;width:100%;height:clamp(260px,33vw,360px);
+  object-fit:contain;object-position:center;background:var(--skin-wash)}
+.quick-guide-feature figcaption{position:absolute;left:10px;right:10px;bottom:10px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 11px;border-radius:9px;background:color-mix(in srgb,var(--surface) 90%,transparent);
+  color:var(--accent-strong);font-size:11px;font-weight:800;backdrop-filter:blur(9px)}
+.quick-guide-thumbnails{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.quick-guide-thumb{border:2px solid var(--skin-border);background:var(--surface-soft);
+  border-radius:10px;padding:3px;min-width:0;cursor:pointer;overflow:hidden;
+  transition:border-color .16s,transform .16s,box-shadow .16s}
+.quick-guide-thumb img{display:block;width:100%;height:75px;object-fit:cover;
+  object-position:center 56%;border-radius:6px}
+.quick-guide-thumb.is-selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--skin-ring)}
+.quick-guide-thumb:hover {border-color:var(--accent);transform:translateY(-2px)}
+.quick-guide-help{font-size:11px;line-height:1.7;margin:12px 4px 0}
+@media(max-width:900px){
+  .quick-guide-feature img{height:min(60svh,360px)}
+  .quick-guide-thumb img{height:clamp(60px,16vw,90px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .quick-guide-thumb,.btn{transition:none}
+}
