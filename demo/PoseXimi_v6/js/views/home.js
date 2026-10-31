@@ -19,7 +19,6 @@ export function renderHome() {
  .mobile-preview-section { display:none; }
  @media(max-width:900px) { .mobile-preview-section{display:block;margin-bottom:20px} .home-right{display:none!important} }
  </style>
- ${heading('YOUR CREATIVE SPACE','Studio của riêng bạn ✳','Chuẩn bị ảnh theo từng bước rồi nhấn Gợi ý tư thế ở cuối.',{progress:false})}
  <!-- Hero: retains the existing layout and CTA-free banner. -->
  <section class="hero-banner"><div class="hero-copy"><span class="eyebrow">LET’S MAKE MEMORIES</span><h2>Một tư thế đẹp.<br>Một kỷ niệm thật riêng.</h2><p>Khám phá kiểu tạo dáng phù hợp và lưu khoảnh khắc của bạn.</p></div><div class="hero-art"><div class="hero-monogram" aria-hidden="true"><img class="hero-logo-art" src="assets/poseximi-logo.png" alt="" /></div></div></section>
  <div class="home-grid"><div class="home-step-stack">
