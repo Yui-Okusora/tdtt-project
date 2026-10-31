@@ -143,7 +143,7 @@ async function processFile(file){if(!file)return;
  }catch(error){toast(error.message||'Không đọc được ảnh.');}
 }
 async function launchInputCamera(kind){
- showModal(`<h2>Chụp ${kind==='background'?'ảnh background':'ảnh toàn thân mọi người'}</h2><div class="modal-camera-stage"><video id="inputLiveVideo" autoplay muted playsinline></video></div><p class="capture-footnote">Giữ thiết bị ổn định, lấy đủ khung hình.</p><div class="modal-actionbar"><button class="btn btn-outline" data-action="modal-close">Hủy</button><button class="btn btn-primary" data-action="take-input-photo">◎ Chụp ảnh</button></div>`,'camera-input-modal');
+ showModal(`<h2>Chụp ${kind==='background'?'ảnh background':'ảnh toàn thân mọi người'}</h2><div class="modal-camera-stage"><video id="inputLiveVideo" autoplay muted playsinline></video></div><p class="capture-footnote">Giữ thiết bị ổn định, lấy đủ khung hình.</p><div class="modal-actionbar"><button class="btn btn-outline" data-action="modal-close">Hủy</button><button class="btn btn-primary" data-action="take-input-photo">Chụp ảnh</button></div>`,'camera-input-modal');
  try{await openInputCamera(kind);attachInputCamera()}catch(error){stopInputCamera();closeModal();toast(error.message||'Không thể mở camera.')}
 }
 function takeInputPhoto(){

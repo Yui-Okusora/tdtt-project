@@ -43,7 +43,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline-color:#e99eb8}
 .selection-tile:nth-child(3) .style-symbol{background:#fae3db}
 .mini-badge,.tag-chip{background:#fae7ee;color:#8c2044}
 .continue-bar{background:#fbe9ee}
-.continue-bar span{color:#9c6c7d}
+.continue-bar > div > span{color:#9c6c7d}
 .pose-card.chosen{border-color:#b83f69}
 .pose-card:hover{box-shadow:0 13px 28px #7d2a4817}
 .capture-stage{background:#32262b}
