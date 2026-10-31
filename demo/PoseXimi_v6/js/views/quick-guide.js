@@ -17,7 +17,7 @@ export function renderQuickGuide(){
  ${photo?`<figure class="quick-guide-feature quick-guide-single">
    <img src="${photo}" alt="Ảnh gợi ý ${safe(style)} đúng ${people} người" decoding="async" loading="lazy" width="450" height="600" />
    <figcaption>${safe(style)} <span>${people} người</span></figcaption>
- </figure><p class="quick-guide-help">${COPY[style]}</p>`:
+ </figure>`:
  '<div class="quick-guide-empty" role="status">Chọn số người (1–4) và phong cách Casual, Fashion hoặc JoJo để xem ảnh minh họa phù hợp.</div>'}
  </section>`;
 }

@@ -269,7 +269,7 @@ $('#resetPasswordBtn').addEventListener('click',()=>showModal('<h2>Đặt lại 
 // The underlying CSS variable engine stays centralized in services/appearance.js.
 $('#appearanceBtn').addEventListener('click',()=>{
  showModal(`<h2>Tùy chỉnh giao diện ♡</h2>
- <p class="muted">Xem trước palette gradient và font rồi chọn. Layout vẫn được giữ nguyên.</p>
+ <p class="muted">Xem trước palette gradient và font rồi chọn.</p>
  <div id="appearancePanel">${renderAppearancePicker()}</div>
  <div class="modal-actionbar"><button class="btn btn-outline" data-action="modal-close">Đóng</button></div>`,'appearance-modal');
 });
