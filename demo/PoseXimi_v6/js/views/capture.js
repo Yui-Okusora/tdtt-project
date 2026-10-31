@@ -16,7 +16,7 @@ export function renderCapture(){
  <span class="camera-watermark">P · POSEXIMI</span>
  ${live?`<video id="liveVideo" class="${state.camera.facing==='user'?'front-camera':''}" autoplay muted playsinline aria-label="Camera đang hoạt động"></video>`:photo?`<img class="existing-photo" src="${photo}" alt="Ảnh nhóm sau khi chụp" />`:'<div class="camera-placeholder"><div class="big-camera">◎</div><h3>Chụp trọn khoảnh khắc</h3><p>Cho tất cả người tham gia vào khung hình, sau đó bấm mở camera hoặc tải ảnh.</p></div>'}
  <!-- POSE PIP: luôn nằm trong viewport camera, có thể ẩn và bật lại bằng nút bên dưới. -->
- ${state.camera.showPoseOverlay?`<aside class="pose-camera-pip" aria-label="Pose mẫu đang chọn"><div class="pose-camera-pip-art">${poseSVG(state.people,pose.variant,state.background,state.style)}</div><span class="pose-camera-pip-title">${safe(pose.title)}</span><button class="pose-camera-pip-close" type="button" data-action="toggle-pose-overlay" aria-label="Ẩn pose mẫu" title="Ẩn mẫu">×</button></aside>`:''}
+ ${state.camera.showPoseOverlay?`<aside class="pose-camera-pip" aria-label="Pose mẫu đang chọn"><div class="pose-camera-pip-art">${poseSVG(state.people,pose.variant,state.background,state.style)}</div><span class="pose-camera-pip-title">${safe(pose.title)}</span></aside>`:''}
  </div>
  <!-- Camera controls: show/hide sample, flip, zoom, shutter, upload. -->
  <div class="camera-toolbar"><button class="btn btn-soft" type="button" data-action="toggle-pose-overlay" aria-pressed="${state.camera.showPoseOverlay}">${state.camera.showPoseOverlay?'Ẩn pose mẫu':'Hiện pose mẫu'}
