@@ -10,7 +10,7 @@ export function toast(message) {
 }
 export function showModal(body, style='') {
   restoreFocus=document.activeElement;
-  $('#modalRoot').innerHTML=`<div class="modal-backdrop" data-backdrop="true"><div class="modal ${safe(style)}" role="dialog" aria-modal="true" aria-label="Hộp thoại PoseXimi"><div class="modal-head"><strong>POSEXIMI ♡</strong><button class="icon-btn modal-close" type="button" data-action="modal-close" aria-label="Đóng">×</button></div>${body}</div></div>`;
+  $('#modalRoot').innerHTML=`<div class="modal-backdrop" data-backdrop="true"><div class="modal ${safe(style)}" role="dialog" aria-modal="true" aria-label="Hộp thoại PoseXimi"><div class="modal-head"><strong>POSEXIMI</strong><button class="icon-btn modal-close" type="button" data-action="modal-close" aria-label="Đóng">×</button></div>${body}</div></div>`;
   decorateIcons($('#modalRoot'));
   $('.modal-close')?.focus();
 }
