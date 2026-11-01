@@ -1,0 +1,92 @@
+/* ==============================================================
+   PoseXimi_v6 — Palette-aware install, progress and notifications
+   Loaded after all legacy styles so hard-coded v5 colors cannot
+   override the currently selected palette.
+
+   Sources of truth: --accent, --accent-strong, --surface-soft,
+   --surface, --text-main and --button-gradient from appearance.js.
+   CSS handles theme changes immediately; no extra JS listeners.
+   ============================================================== */
+:root {
+  --px-status-soft: color-mix(in srgb, var(--surface-soft) 78%, var(--surface));
+  --px-status-border: color-mix(in srgb, var(--accent) 30%, var(--stroke));
+  --px-status-hover: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  --px-status-shadow: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* PWA installation: follows the same gradient as primary actions. */
+.install-app-btn {
+  background: var(--button-gradient);
+  border-color: var(--accent-strong);
+  color: #fff;
+  box-shadow: 0 5px 16px var(--px-status-shadow);
+  transition: filter .18s ease, box-shadow .18s ease;
+}
+.install-app-btn:hover:not(:disabled) {
+  background: var(--button-gradient);
+  color: #fff;
+  filter: brightness(.91);
+  box-shadow: 0 7px 19px var(--px-status-shadow);
+}
+.install-app-btn:focus-visible {
+  outline: 3px solid var(--px-status-border);
+  outline-offset: 2px;
+}
+
+/* Stepper: completed check circles, active step and connectors. */
+.step.done .step-index,
+.step.active .step-index {
+  background: var(--button-gradient);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--px-status-shadow);
+}
+.step.done,
+.step.active { color: var(--accent-strong); }
+.step-line { background: var(--px-status-border); }
+.step:not(.done):not(.active) .step-index {
+  background: var(--surface);
+  border-color: var(--px-status-border);
+  color: var(--text-soft);
+}
+
+/* Toasts: informational, confirmation and operation feedback. */
+.toast {
+  background: var(--button-gradient);
+  color: #fff;
+  border: 1px solid var(--accent-strong);
+  box-shadow: 0 12px 34px var(--px-status-shadow);
+}
+
+/* App-update notification; keep panel readable on light palettes. */
+.pwa-update-banner {
+  background: var(--px-status-soft);
+  border-color: var(--px-status-border);
+  color: var(--text-main);
+}
+.pwa-update-banner button:not(:last-child) {
+  background: var(--button-gradient);
+  color: #fff;
+  border-color: var(--accent-strong);
+}
+.pwa-update-banner button:not(:last-child):hover { filter: brightness(.91); }
+.pwa-update-banner button:last-child { color: var(--accent); }
+.pwa-update-banner button:last-child:hover { background: var(--px-status-hover); }
+
+/* Other informative notices, including offline and success feedback.
+   Invalid fields/destructive actions retain their semantic error color. */
+.network-status,
+.auth-feedback.success,
+.pill-status,
+.feedback-box {
+  background: var(--px-status-soft);
+  border-color: var(--px-status-border);
+  color: var(--accent-strong);
+}
+.network-status { border-style: solid; }
+.auth-feedback.success { border-style: solid; }
+.feedback-box strong { color: var(--accent-strong); }
+
+@media (prefers-reduced-motion: reduce) {
+  .install-app-btn { transition: none; }
+}
