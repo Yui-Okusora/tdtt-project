@@ -1,0 +1,41 @@
+/* PoseXimi_v10: v6-style floating pose note + v9 camera and lightweight approval form. */
+.px-pose-note{
+  position:absolute;z-index:3;
+  top:calc(132px + env(safe-area-inset-top));right:clamp(14px,3vw,30px);
+  width:clamp(124px,26vw,208px);border-radius:18px;
+  background:#fffaf6;color:#37232f;overflow:hidden;
+  border:2px solid rgba(255,255,255,.8);box-shadow:0 6px 24px #0005;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.px-pose-note-head{height:30px;display:flex;justify-content:space-between;align-items:center;padding:5px 9px 4px 12px;font-size:10px;font-weight:800;letter-spacing:.08em;color:#673b50}
+.px-pose-note-close{border:0;background:#f9e5ec;border-radius:50%;width:23px;height:23px;display:grid;place-items:center;font-size:16px;color:#6d324b;cursor:pointer}
+.px-pose-note-image{aspect-ratio:4/3;overflow:hidden;background:#f2dfe4;display:grid;place-items:center}
+.px-pose-note-image .pose-illustration{display:block;width:100%;height:100%;object-fit:cover}
+.px-pose-note-caption{display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;padding:7px 10px;font-size:11px;font-weight:700;text-align:center;color:#673b50}
+.px-camera-viewport .px-pose-note:focus-within{opacity:1!important}
+.px-camera-screen.is-taking-photo .px-pose-note{opacity:0!important;visibility:hidden;pointer-events:none!important}
+.px-opacity-control{accent-color:var(--px-brand)}
+/* Naming: editorial rhythm and v6 clean status card without nested borders. */
+.px-photo-naming{margin:23px 0 18px;padding:24px 26px;border-radius:22px;background:var(--px-surface-alt,#f8f1f1);color:var(--px-ink,#3b2b33)}
+.px-photo-naming-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}
+.px-photo-naming-eyebrow{font-size:10px;letter-spacing:.14em;font-weight:800;color:var(--px-brand,#943d5b)}
+.px-photo-naming h2{font:700 clamp(20px,2.6vw,27px)/1.3 var(--px-font-display,'Bricolage Grotesque',sans-serif);margin:4px 0 0}
+.px-photo-naming-step{color:var(--px-muted,#86717c);white-space:nowrap;font-size:11px;font-weight:700}
+.px-photo-naming label{display:block;font-size:13px;font-weight:800;margin-bottom:9px}
+.px-photo-naming label span{color:var(--px-brand,#943d5b)}
+.px-photo-naming input{display:block;box-sizing:border-box;width:100%;min-height:52px;border:1px solid var(--px-hairline,#d8cbd0);border-radius:14px;padding:13px 16px;background:var(--px-surface,#fff);font:500 14px/1.5 var(--px-font-body,'Be Vietnam Pro',sans-serif);color:var(--px-ink,#35252d);outline:none;transition:border-color .18s,box-shadow .18s}
+.px-photo-naming input:focus-visible{border-color:var(--px-brand,#943d5b);box-shadow:0 0 0 3px color-mix(in srgb,var(--px-brand,#943d5b) 17%,transparent)}
+.px-photo-naming input[aria-invalid="true"]{border-color:#c44353;box-shadow:0 0 0 2px #c4435322}
+.px-photo-naming-help,.px-photo-naming-error{font-size:12px;line-height:1.5;margin:8px 0 0;color:var(--px-muted,#786b72)}
+.px-photo-naming-error{color:#ae273f;font-weight:700}
+@media (max-width:580px){
+ .px-pose-note{top:calc(113px + env(safe-area-inset-top));right:12px;width:clamp(112px,33vw,150px);border-radius:14px}
+ .px-pose-note-caption{padding:6px 7px;font-size:10px}
+ .px-photo-naming{padding:20px 17px;margin-top:16px;border-radius:18px}
+ .px-photo-naming-head{margin-bottom:13px}
+ .px-photo-naming input{min-height:50px;font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.px-pose-note,.px-photo-naming input{transition:none}}
+/* Fix inherited v9 rule that accidentally hid the Tabler icon inside Stop camera. */
+.px-camera-control > .px-icon{position:static;clip-path:none;width:23px;height:23px;overflow:visible;display:inline-grid;place-items:center}
+.px-camera-control > .px-icon svg{height:23px;width:23px}
