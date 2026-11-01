@@ -37,7 +37,7 @@ export function CameraScreen(){
      ${live&&camera.zoomSupported&&!photo?`<div class="px-zoom-control"><label for="zoomCamera">Zoom</label><input id="zoomCamera" type="range" min="${camera.minZoom}" max="${camera.maxZoom}" step="0.1" value="${camera.zoom}"/><span id="zoomAmount">${camera.zoom.toFixed(1)}×</span></div>`:''}
      <footer class="px-camera-bottom">
       ${photo?`<button type="button" class="px-camera-secondary" data-action="retake-camera">Chụp lại</button><button type="button" class="px-camera-approve" data-action="go-results">Xem kết quả ${iconMarkup('arrow-badge-right')}</button>`:
-      `<button type="button" class="px-camera-aux" data-action="open-file" aria-label="Tải ảnh có sẵn">${iconMarkup('cloud-upload')}</button>
+      `
        ${live?`<button type="button" class="px-shutter px-shutter-tabler" data-action="capture-photo" aria-label="Chụp ảnh" title="Chụp ảnh">${iconMarkup('camera')}</span></button>`:`<button type="button" class="px-camera-start" data-action="open-camera" ${camera.requesting?'disabled':''}>${iconMarkup('camera')}${camera.requesting?'Đang mở…':'Mở camera'}</button>`}
        <button type="button" class="px-camera-aux" data-action="flip-camera" aria-label="Đổi camera trước/sau" ${live?'':'disabled'}>${iconMarkup('camera')}</button>`}
      </footer>
