@@ -1,0 +1,20 @@
+/* Progressive Web App: install/update notices, mobile safe-area support. */
+.install-app-btn{appearance:none;border:1px solid #d7b3c0;background:#fcebf0;color:#842343;border-radius:11px;padding:7px 10px;font-size:11px;font-weight:800;white-space:nowrap;min-height:35px}
+.install-app-btn:hover{background:#f6d8e2}
+.network-status{background:#fff1da;color:#875f19;border:1px solid #f0d6a9;padding:7px 9px;border-radius:10px;font-size:10px;font-weight:800;white-space:nowrap}
+.pwa-update-banner{margin:15px auto 0;width:calc(100% - 48px);max-width:1190px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;background:#fce8ee;border:1px solid #ddb4c3;color:#77213c;border-radius:14px;padding:11px;font-size:12px}
+.pwa-update-banner button{background:#842343;color:#fff;border:0;border-radius:10px;padding:7px 13px;font:inherit;cursor:pointer}
+.pwa-update-banner button:last-child{background:transparent;color:#77213c;padding:4px 8px;font-size:18px}
+@media(max-width:760px){
+ .workspace{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+ .sidebar{height:calc(69px + env(safe-area-inset-bottom,0px));padding-bottom:calc(5px + env(safe-area-inset-bottom,0px))}
+ .topbar{height:calc(62px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}
+ .main-content{padding-bottom:calc(55px + env(safe-area-inset-bottom,0px))}
+ .toast{bottom:calc(87px + env(safe-area-inset-bottom,0px))}
+ .login-showcase{padding-top:calc(22px + env(safe-area-inset-top,0px))}
+ .modal-backdrop{padding-bottom:env(safe-area-inset-bottom,0px)}
+ .top-actions{gap:9px}
+ .pwa-update-banner{width:calc(100% - 32px);margin-top:10px}
+}
+@media(max-width:370px){.install-app-btn{padding:7px;font-size:10px}.breadcrumb{gap:8px}.nav-item{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.main-content,.btn{animation:none!important;transition:none!important}}

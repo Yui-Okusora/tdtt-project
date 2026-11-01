@@ -1,0 +1,21 @@
+/* v4 icon system: local SVG = offline fallback; official Tabler webfont = when loaded. */
+.px-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;vertical-align:middle;width:1.25em;height:1.25em;color:inherit;line-height:1}
+.px-icon svg{display:block;width:100%;height:100%;stroke:currentColor;pointer-events:none}
+.px-icon i{display:none;font-size:1em;font-style:normal;line-height:1}
+:root.tabler-webfont-ok .px-icon i{display:inline-block}
+:root.tabler-webfont-ok .px-icon svg{display:none}
+.nav-icon .px-icon{width:20px;height:20px}
+.btn.has-tabler-icon,.icon-btn.has-tabler-icon{gap:7px}
+.camera-placeholder .big-camera .px-icon{font-size:55px}
+.empty-view .empty-icon .px-icon{font-size:48px}
+.icon-btn.has-tabler-icon .px-icon{font-size:19px}
+.brand-logo-p{object-fit:contain;background:color-mix(in srgb,var(--surface,white) 82%,transparent);border-radius:13px;padding:3px}
+.quick-guide-single{margin-bottom:13px}
+.quick-guide-empty{border:1px dashed var(--stroke);border-radius:14px;padding:20px;color:var(--text-soft)}
+
+.appearance-font-choice:disabled{opacity:.58;cursor:not-allowed}
+.font-safety-note{font-family:var(--font-body)!important;font-size:10px;color:var(--text-soft)}
+
+/* Owner's official supplied Px logo in the existing hero layout */
+.hero-monogram:has(.hero-logo-art){background:transparent;box-shadow:none}
+.hero-monogram .hero-logo-art{width:min(100%,165px);height:auto;object-fit:contain;display:block}
