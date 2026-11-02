@@ -1,0 +1,200 @@
+/* PoseXimi v14 – upload assessment demo. Scoped to wizard; does not change other screens. */
+.px-demo-panel {
+  margin: 20px 0 24px;
+  padding: clamp(16px, 2.5vw, 22px);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--px-surface-alt, #fbe9e8) 80%, white);
+  border: 1px dashed
+    color-mix(in srgb, var(--px-brand, #9f3657) 27%, transparent);
+}
+.px-demo-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.px-demo-panel-heading > .px-icon {
+  flex: 0 0 auto;
+  color: var(--px-brand);
+  width: 24px;
+  height: 24px;
+}
+.px-demo-kicker {
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  color: var(--px-brand, #91334c);
+}
+.px-demo-panel h3 {
+  font-size: 17px;
+  margin: 6px 0;
+  line-height: 1.3;
+}
+.px-demo-panel p {
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0;
+  color: var(--px-subtle, #826877);
+  max-width: 600px;
+}
+.px-demo-scenario-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.px-demo-scenario {
+  appearance: none;
+  cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--px-brand, #92314c) 18%, #e9dfdb);
+  background: var(--px-surface, #fff);
+  color: var(--px-ink, #32272f);
+  border-radius: 99px;
+  min-height: 38px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 750;
+  transition:
+    background 0.15s,
+    transform 0.15s;
+}
+.px-demo-scenario.is-selected {
+  color: #fff;
+  border-color: var(--px-brand, #92314c);
+  background: var(--button-gradient, var(--px-brand, #92314c));
+}
+.px-demo-scenario:focus-visible {
+  outline: 3px solid var(--px-brand, #92314c);
+  outline-offset: 3px;
+}
+.px-demo-photo-art {
+  position: relative;
+}
+.px-demo-image-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  max-width: calc(100% - 20px);
+  padding: 7px 11px;
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 12px;
+  box-shadow: 0 4px 14px rgba(30, 18, 24, 0.12);
+}
+.px-demo-image-tag .px-icon {
+  width: 16px;
+  height: 16px;
+}
+.px-demo-image-tag-valid {
+  background: #e5f5e9;
+  color: #146539;
+}
+.px-demo-image-tag-invalid {
+  background: #ffe9e8;
+  color: #a32c37;
+}
+.px-demo-result {
+  padding: 13px 14px;
+  margin-top: 14px;
+  border-radius: 14px;
+  line-height: 1.5;
+  min-height: 96px;
+}
+.px-demo-result-empty {
+  background: color-mix(in srgb, var(--px-surface-alt, #f7ede6) 70%, white);
+  color: var(--px-subtle, #866e73);
+}
+.px-demo-result-valid {
+  background: #e7f7ec;
+  color: #155d35;
+  border: 1px solid #bedcc7;
+}
+.px-demo-result-invalid {
+  background: #fff0ee;
+  color: #992b35;
+  border: 1px solid #f2c5c7;
+}
+.px-demo-result-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.px-demo-result-heading .px-icon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+.px-demo-result-heading strong {
+  font-size: 14px;
+}
+.px-demo-result p {
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 7px 0 0;
+}
+.px-demo-fix {
+  font-weight: 700;
+}
+.px-demo-label {
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  margin-left: auto;
+  opacity: 0.65;
+  font-weight: 850;
+}
+.px-demo-summary {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+  background: #fff3e7;
+  color: #825c29;
+  font-size: 13px;
+  font-weight: 650;
+}
+.px-demo-summary .px-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.px-demo-summary.is-valid {
+  background: #e7f7ec;
+  color: #155d35;
+}
+@media (max-width: 720px) {
+  .px-demo-scenario {
+    flex: 1 1 calc(50% - 8px);
+    padding: 9px 7px;
+  }
+  .px-demo-result {
+    min-height: unset;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .px-demo-scenario {
+    transition: none;
+  }
+}
+
+.px-demo-result-technical,
+.px-demo-image-tag-technical {
+  background: #e9f1fc;
+  color: #174e8d;
+}
+.px-demo-result-technical {
+  border: 1px solid #c1d8f5;
+}
+
+.px-demo-result-unchecked,
+.px-demo-image-tag-unchecked {
+  background: #fff1df;
+  color: #815322;
+}
+.px-demo-result-unchecked {
+  border: 1px solid #f2d29e;
+}
