@@ -1,0 +1,150 @@
+/* Shared BaseCard and PrimaryButton: no nested card frames, no decorative shadows. */
+.px-card {
+  background: var(--px-surface);
+  border: 0;
+  border-radius: var(--px-radius-l);
+  padding: clamp(20px, 4vw, 40px);
+  box-shadow: none;
+  min-width: 0;
+}
+.px-card-title {
+  font-size: clamp(22px, 2.6vw, 31px);
+  letter-spacing: -0.045em;
+  line-height: 1.18;
+  margin: 6px 0 8px;
+  color: var(--px-ink);
+}
+.px-kicker,
+.px-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--px-brand);
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.px-stage-hint {
+  color: var(--px-subtle);
+  line-height: 1.75;
+  font-size: 13px;
+  margin: 0 0 24px;
+}
+.px-primary-button,
+.px-outline-button,
+.px-text-button {
+  border: 0;
+  border-radius: 999px;
+  min-height: 48px;
+  padding: 12px 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    transform 0.18s var(--px-ease),
+    background 0.18s var(--px-ease);
+}
+.px-primary-button {
+  background: var(--px-cta);
+  color: white;
+  min-width: 180px;
+}
+.px-primary-button:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+.px-primary-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+.px-primary-button .px-icon,
+.px-outline-button .px-icon,
+.px-text-button .px-icon {
+  width: 20px;
+  height: 20px;
+  color: inherit;
+}
+.px-outline-button {
+  background: var(--px-surface-alt);
+  color: var(--px-brand);
+  border: 1px solid var(--px-hairline);
+}
+.px-text-button {
+  background: transparent;
+  color: var(--px-ink);
+  padding-left: 5px;
+}
+.px-text-button:hover {
+  background: var(--px-surface-alt);
+}
+.px-stage-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+.px-stage-footer .px-primary-button {
+  margin-left: auto;
+}
+/* Tabler SVG icons: 24/2 stroke and shared 20-24px geometry. */
+.px-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+.px-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 2;
+}
+/* Existing legacy buttons in result/library use the same minimal visual language. */
+.px-workspace .btn {
+  box-shadow: none !important;
+  border-radius: 999px;
+  min-height: 44px;
+  letter-spacing: 0;
+  transition:
+    transform 0.18s var(--px-ease),
+    background 0.18s;
+}
+.px-workspace .btn-primary {
+  background: var(--px-cta) !important;
+  border: 0;
+  color: white !important;
+}
+.px-workspace .btn-soft {
+  background: var(--px-surface-alt);
+  color: var(--px-brand);
+}
+.px-workspace .btn-outline {
+  background: var(--px-surface);
+  color: var(--px-ink);
+  border: 1px solid var(--px-hairline);
+}
+.px-workspace .content-card,
+.px-workspace .pose-card,
+.px-workspace .album-card {
+  box-shadow: none !important;
+  border: 0 !important;
+  background: var(--px-surface);
+  border-radius: var(--px-radius-l);
+}
+.px-workspace .page-head {
+  margin-bottom: 28px;
+}
+.px-workspace .page-head h1 {
+  font-size: clamp(26px, 3vw, 42px);
+  letter-spacing: -0.045em;
+}
+.px-workspace .page-head p {
+  font-size: 13px;
+  line-height: 1.7;
+}
