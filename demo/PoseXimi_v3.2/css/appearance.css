@@ -1,58 +1,186 @@
 /* PoseXimi centralized design tokens. Only edit theme declarations below to add palettes.
    Base CSS and page layouts remain unchanged. Loaded AFTER theme.css/v31.css. */
 :root {
- --font-body: 'DM Sans', sans-serif;
- --font-heading: 'Plus Jakarta Sans', sans-serif;
- --font-brand: 'Plus Jakarta Sans', sans-serif;
- --accent: #8c2044; --accent-strong: #711835;
- --surface: #fffdfa; --surface-soft: #faeaf0; --page: #fbf7f4;
- --text-main:#342129; --text-soft:#89787e; --stroke:#eadbdb;
- --hero-gradient:linear-gradient(115deg,#f9e3e8 0%,#f8eae8 56%,#f4d9df 100%);
- --login-gradient:linear-gradient(148deg,#b44d72 0%,#923557 49%,#762641 100%);
- --button-gradient:linear-gradient(110deg,#9a2850,#7d1c3d);
- --hero-ink:#78213d;
+  --font-body: "DM Sans", sans-serif;
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-brand: "Plus Jakarta Sans", sans-serif;
+  --accent: #8c2044;
+  --accent-strong: #711835;
+  --surface: #fffdfa;
+  --surface-soft: #faeaf0;
+  --page: #fbf7f4;
+  --text-main: #342129;
+  --text-soft: #89787e;
+  --stroke: #eadbdb;
+  --hero-gradient: linear-gradient(
+    115deg,
+    #f9e3e8 0%,
+    #f8eae8 56%,
+    #f4d9df 100%
+  );
+  --login-gradient: linear-gradient(
+    148deg,
+    #b44d72 0%,
+    #923557 49%,
+    #762641 100%
+  );
+  --button-gradient: linear-gradient(110deg, #9a2850, #7d1c3d);
+  --hero-ink: #78213d;
 }
-:root[data-palette='lilac'] {
- --accent:#6752af;--accent-strong:#443184;--surface:#fcfaff;--surface-soft:#ece5ff;
- --page:#f8f6ff;--text-main:#302844;--text-soft:#817491;--stroke:#e2d9ef;
- --hero-gradient:linear-gradient(115deg,#eee7ff,#f9f2fc,#e1d8f9);
- --login-gradient:linear-gradient(148deg,#8570c8,#6955b0,#453483);
- --button-gradient:linear-gradient(110deg,#8462c2,#59449f);--hero-ink:#514090;
+:root[data-palette="lilac"] {
+  --accent: #6752af;
+  --accent-strong: #443184;
+  --surface: #fcfaff;
+  --surface-soft: #ece5ff;
+  --page: #f8f6ff;
+  --text-main: #302844;
+  --text-soft: #817491;
+  --stroke: #e2d9ef;
+  --hero-gradient: linear-gradient(115deg, #eee7ff, #f9f2fc, #e1d8f9);
+  --login-gradient: linear-gradient(148deg, #8570c8, #6955b0, #453483);
+  --button-gradient: linear-gradient(110deg, #8462c2, #59449f);
+  --hero-ink: #514090;
 }
-:root[data-palette='matcha'] {
- --accent:#496a57;--accent-strong:#2d5140;--surface:#fbfcf5;--surface-soft:#e4f0e4;
- --page:#f6f9f3;--text-main:#263c31;--text-soft:#6c8475;--stroke:#d8e4d8;
- --hero-gradient:linear-gradient(115deg,#e1eddc,#f5f8e9,#dbeacf);
- --login-gradient:linear-gradient(148deg,#6d9678,#496f59,#2f5541);
- --button-gradient:linear-gradient(110deg,#62866b,#365b43);--hero-ink:#31543a;
+:root[data-palette="matcha"] {
+  --accent: #496a57;
+  --accent-strong: #2d5140;
+  --surface: #fbfcf5;
+  --surface-soft: #e4f0e4;
+  --page: #f6f9f3;
+  --text-main: #263c31;
+  --text-soft: #6c8475;
+  --stroke: #d8e4d8;
+  --hero-gradient: linear-gradient(115deg, #e1eddc, #f5f8e9, #dbeacf);
+  --login-gradient: linear-gradient(148deg, #6d9678, #496f59, #2f5541);
+  --button-gradient: linear-gradient(110deg, #62866b, #365b43);
+  --hero-ink: #31543a;
 }
-:root[data-palette='apricot'] {
- --accent:#a74e42;--accent-strong:#81362f;--surface:#fffaf4;--surface-soft:#ffe9da;
- --page:#fff8f2;--text-main:#482d28;--text-soft:#967770;--stroke:#eeddd1;
- --hero-gradient:linear-gradient(115deg,#ffeadc,#fff7ed,#f8d6c7);
- --login-gradient:linear-gradient(148deg,#d78167,#bb6553,#8d413d);
- --button-gradient:linear-gradient(110deg,#bd6954,#994539);--hero-ink:#893c35;
+:root[data-palette="apricot"] {
+  --accent: #a74e42;
+  --accent-strong: #81362f;
+  --surface: #fffaf4;
+  --surface-soft: #ffe9da;
+  --page: #fff8f2;
+  --text-main: #482d28;
+  --text-soft: #967770;
+  --stroke: #eeddd1;
+  --hero-gradient: linear-gradient(115deg, #ffeadc, #fff7ed, #f8d6c7);
+  --login-gradient: linear-gradient(148deg, #d78167, #bb6553, #8d413d);
+  --button-gradient: linear-gradient(110deg, #bd6954, #994539);
+  --hero-ink: #893c35;
 }
-:root[data-font='sweet']{--font-body:'Quicksand',sans-serif;--font-heading:'Quicksand',sans-serif;--font-brand:'Coiny',cursive}
-:root[data-font='editorial']{--font-body:'Be Vietnam Pro',sans-serif;--font-heading:'Bricolage Grotesque',sans-serif;--font-brand:'Bricolage Grotesque',sans-serif}
-:root[data-font='fashion']{--font-body:'Be Vietnam Pro',sans-serif;--font-heading:'Fraunces',serif;--font-brand:'Fraunces',serif}
-:root { --bg:var(--page);--white:var(--surface);--ink:var(--text-main);
- --muted:var(--text-soft);--line:var(--stroke);--purple:var(--accent);--darkpurple:var(--accent-strong);--lav:var(--surface-soft); }
-body,button,input,textarea,select{font-family:var(--font-body)}
-h1,h2,h3,h4,.page-head h1,.hero-copy h2{font-family:var(--font-heading)}
-.brand-name,.login-brand,.workspace-brand{font-family:var(--font-brand)}
+:root[data-font="sweet"] {
+  --font-body: "Quicksand", sans-serif;
+  --font-heading: "Quicksand", sans-serif;
+  --font-brand: "Coiny", cursive;
+}
+:root[data-font="editorial"] {
+  --font-body: "Be Vietnam Pro", sans-serif;
+  --font-heading: "Bricolage Grotesque", sans-serif;
+  --font-brand: "Bricolage Grotesque", sans-serif;
+}
+:root[data-font="fashion"] {
+  --font-body: "Be Vietnam Pro", sans-serif;
+  --font-heading: "Fraunces", serif;
+  --font-brand: "Fraunces", serif;
+}
+:root {
+  --bg: var(--page);
+  --white: var(--surface);
+  --ink: var(--text-main);
+  --muted: var(--text-soft);
+  --line: var(--stroke);
+  --purple: var(--accent);
+  --darkpurple: var(--accent-strong);
+  --lav: var(--surface-soft);
+}
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+}
+h1,
+h2,
+h3,
+h4,
+.page-head h1,
+.hero-copy h2 {
+  font-family: var(--font-heading);
+}
+.brand-name,
+.login-brand,
+.workspace-brand {
+  font-family: var(--font-brand);
+}
 /* Centralized component skin overrides prevent editing dozens of hard-coded rules. */
-body,.workspace{background:var(--page);color:var(--text-main)}
-.login-panel,.sidebar,.topbar,.content-card,.pose-card,.album-card{background:var(--surface);border-color:var(--stroke)}
-.login-showcase{background:var(--login-gradient)}
-.hero-banner{background:var(--hero-gradient)}
-.hero-copy h2,.hero-monogram,.login-kicker,.eyebrow{color:var(--hero-ink)}
-.btn-primary{background:var(--button-gradient);box-shadow:0 7px 18px color-mix(in srgb,var(--accent) 17%,transparent)}
-.btn-primary:hover:not(:disabled){background:var(--accent-strong)}
-.btn-soft,.nav-item.active,.mini-badge,.tag-chip,.avatar,.top-dot{background:var(--surface-soft);color:var(--accent)}
-.btn-outline,.appearance-trigger{background:var(--surface);border-color:var(--stroke)}
-.selection-tile.selected,.count-btn.selected,.background-tile.selected{background:var(--surface-soft);border-color:var(--accent);color:var(--accent)}
-.quick-guide-list li,.input-photo-card,.retake-tip-list li{background:var(--surface);border-color:var(--stroke)}
-.hero-monogram{background:var(--surface-soft)}
-.pose-camera-pip{border-color:var(--stroke)}
-:root[data-palette='rose'] .hero-monogram{color:#8c2044}
+body,
+.workspace {
+  background: var(--page);
+  color: var(--text-main);
+}
+.login-panel,
+.sidebar,
+.topbar,
+.content-card,
+.pose-card,
+.album-card {
+  background: var(--surface);
+  border-color: var(--stroke);
+}
+.login-showcase {
+  background: var(--login-gradient);
+}
+.hero-banner {
+  background: var(--hero-gradient);
+}
+.hero-copy h2,
+.hero-monogram,
+.login-kicker,
+.eyebrow {
+  color: var(--hero-ink);
+}
+.btn-primary {
+  background: var(--button-gradient);
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 17%, transparent);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+.btn-soft,
+.nav-item.active,
+.mini-badge,
+.tag-chip,
+.avatar,
+.top-dot {
+  background: var(--surface-soft);
+  color: var(--accent);
+}
+.btn-outline,
+.appearance-trigger {
+  background: var(--surface);
+  border-color: var(--stroke);
+}
+.selection-tile.selected,
+.count-btn.selected,
+.background-tile.selected {
+  background: var(--surface-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.quick-guide-list li,
+.input-photo-card,
+.retake-tip-list li {
+  background: var(--surface);
+  border-color: var(--stroke);
+}
+.hero-monogram {
+  background: var(--surface-soft);
+}
+.pose-camera-pip {
+  border-color: var(--stroke);
+}
+:root[data-palette="rose"] .hero-monogram {
+  color: #8c2044;
+}

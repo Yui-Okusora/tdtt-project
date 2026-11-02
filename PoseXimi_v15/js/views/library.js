@@ -12,9 +12,9 @@ export function renderLibrary() {
       (a) => state.libraryFilter === "all" || a.style === state.libraryFilter,
     )
     .sort((a, b) =>
-      state.librarySort === "oldest"
-        ? a.createdAt - b.createdAt
-        : b.createdAt - a.createdAt,
+      state.librarySort === "oldest" ?
+        a.createdAt - b.createdAt
+      : b.createdAt - a.createdAt,
     );
   const visible = filtered.filter((a) =>
     `${a.title || a.poseTitle || ""} ${a.poseTitle || ""} ${a.style} ${a.people} người`
@@ -29,6 +29,9 @@ export function renderLibrary() {
      ["Casual", "Casual"],
      ["Fashion", "Fashion"],
      ["JoJo", "JoJo"],
+     ["Sporty", "Sporty"],
+     ["Funny", "Funny"],
+     ["Cool", "Cool"],
    ]
      .map(
        ([value, label]) =>

@@ -1,12 +1,30 @@
 /** Static options and demo-only presets. Replace ranking with your backend. */
 export const STYLES = [
-  { id: "Casual", label: "Casual", desc: "Tự nhiên, thoải mái", symbol: "♡" },
-  { id: "Fashion", label: "Fashion", desc: "Thời trang, cá tính", symbol: "✦" },
+  { id: "Casual", label: "Casual", desc: "Tự nhiên, thoải mái", symbol: "" },
+  { id: "Fashion", label: "Fashion", desc: "Thời trang, cá tính", symbol: "" },
   {
     id: "JoJo",
     label: "JoJo",
     desc: "Dáng pose mạnh mẽ, nổi bật",
-    symbol: "★",
+    symbol: "",
+  },
+  {
+    id: "Sporty",
+    label: "Sporty",
+    desc: "Dáng pose năng động",
+    symbol: "",
+  },
+  {
+    id: "Couples",
+    label: "Couples",
+    desc: "Dáng pose năng động",
+    symbol: "",
+  },
+  {
+    id: "Cool",
+    label: "Cool",
+    desc: "Dáng pose năng động",
+    symbol: "",
   },
 ];
 export const BACKGROUNDS = [

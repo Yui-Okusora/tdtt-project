@@ -1,23 +1,106 @@
 /* SIGN UP: reuse login's exact split layout, do not change the existing login structure. */
-.signup-view .login-panel { background: var(--white); }
-.signup-view .login-form-wrap { padding: 34px 0; }
-.signup-view .login-intro { margin-bottom: 18px; }
-.signup-view .login-form { gap: 7px; }
-.signup-view .login-form input { margin-bottom: 2px; }
-.signup-view .credential-box { margin-top: 10px; }
-.auth-feedback { border:1px solid #d48a9c; background:#fff0f2; color:#842741;
-  border-radius:11px; padding:11px 13px; font-size:13px; line-height:1.5; margin:8px 0; }
-.auth-feedback.success { border-color:#8eb99c; background:#e6f5ea; color:#315b3c; }
-.appearance-trigger { border:1px solid var(--line); background:var(--white); color:var(--ink);
-  padding:8px 12px; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer; }
-.appearance-form { display:grid; gap:14px; margin:16px 0; }
-.appearance-form label { display:grid;gap:6px;font-weight:700;font-size:13px; }
-.appearance-form select { padding:12px; background:var(--white); border:1px solid var(--line);
-  border-radius:11px; color:var(--ink); font:inherit; }
-.palette-swatches { display:flex;gap:8px;align-items:center; }
-.palette-swatch { width:27px;height:27px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #ccc; }
-.retake-tip-list { display:grid;gap:12px;padding:0;list-style:none;margin:12px 0 22px; }
-.retake-tip-list li { display:flex; gap:10px; align-items:flex-start; line-height:1.6;
- padding:12px 14px; border-radius:12px; background:var(--lav); color:var(--ink); }
-.retake-tip-list li:before { content:'✦'; color:var(--purple);font-weight:800; }
-@media(max-width:760px){.signup-view .login-form-wrap{padding:26px 0}.appearance-trigger{padding:7px 9px;font-size:11px}}
+.signup-view .login-panel {
+  background: var(--white);
+}
+.signup-view .login-form-wrap {
+  padding: 34px 0;
+}
+.signup-view .login-intro {
+  margin-bottom: 18px;
+}
+.signup-view .login-form {
+  gap: 7px;
+}
+.signup-view .login-form input {
+  margin-bottom: 2px;
+}
+.signup-view .credential-box {
+  margin-top: 10px;
+}
+.auth-feedback {
+  border: 1px solid #d48a9c;
+  background: #fff0f2;
+  color: #842741;
+  border-radius: 11px;
+  padding: 11px 13px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.auth-feedback.success {
+  border-color: #8eb99c;
+  background: #e6f5ea;
+  color: #315b3c;
+}
+.appearance-trigger {
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.appearance-form {
+  display: grid;
+  gap: 14px;
+  margin: 16px 0;
+}
+.appearance-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.appearance-form select {
+  padding: 12px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  color: var(--ink);
+  font: inherit;
+}
+.palette-swatches {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.palette-swatch {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #ccc;
+}
+.retake-tip-list {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+  margin: 12px 0 22px;
+}
+.retake-tip-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.6;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--lav);
+  color: var(--ink);
+}
+.retake-tip-list li:before {
+  content: "✦";
+  color: var(--purple);
+  font-weight: 800;
+}
+@media (max-width: 760px) {
+  .signup-view .login-form-wrap {
+    padding: 26px 0;
+  }
+  .appearance-trigger {
+    padding: 7px 9px;
+    font-size: 11px;
+  }
+}

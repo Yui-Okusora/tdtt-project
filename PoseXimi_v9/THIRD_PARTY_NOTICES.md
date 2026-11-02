@@ -1,6 +1,7 @@
 # Third-party notice — PoseXimi v4
 
 Official Tabler Icons webfont is loaded from jsDelivr when a network connection is available:
+
 - https://github.com/tabler/tabler-icons
 - Package: `@tabler/icons-webfont@3.48.0`
 - License: MIT (Tabler Icons contributors)

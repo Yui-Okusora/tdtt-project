@@ -5,15 +5,15 @@
 
 ## 1. Current capabilities, by stage
 
-| Stage | Exists | UX friction to address |
-| --- | --- | --- |
-| Sign in / Sign up | Username/password login, validation on blur and guest mode | Too much visual decoration, limited password visibility and account recovery; ensure effective error guidance |
-| Home | Choose 1–4 people, matching style illustration, Casual/Fashion/JoJo, background + group photo uploads | Too many full-height cards for simple decisions; primary value (poses) is discovered late; status of readiness unclear |
-| Pose selection | 3 presets, expand to 6, optional AI preview | Preview becomes an error when AI backend is absent; no always-working larger view |
-| Camera | Responsive camera, overlay pose, flip/zoom, upload, retake hints | Main live feed is embedded in card chrome; insufficient hands-free capture; need better mobile ergonomics |
-| Result | Side-by-side photo and pose sample, Retake and Approve | On mobile the comparison requires vertical scroll; static tips cannot imply AI assessment |
-| Library | Local IndexedDB photos, view, download, delete, loading and empty states | No search/sort/style filtering; previous audit identifies account-isolation and fallback-consistency risks |
-| Appearance & PWA | 19 palettes, 9 font sets, install, offline shell | Too many expressive fonts/gradients can reduce consistency; enforce readable Vietnamese and accessibility tokens |
+| Stage             | Exists                                                                                                | UX friction to address                                                                                                 |
+| ----------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Sign in / Sign up | Username/password login, validation on blur and guest mode                                            | Too much visual decoration, limited password visibility and account recovery; ensure effective error guidance          |
+| Home              | Choose 1–4 people, matching style illustration, Casual/Fashion/JoJo, background + group photo uploads | Too many full-height cards for simple decisions; primary value (poses) is discovered late; status of readiness unclear |
+| Pose selection    | 3 presets, expand to 6, optional AI preview                                                           | Preview becomes an error when AI backend is absent; no always-working larger view                                      |
+| Camera            | Responsive camera, overlay pose, flip/zoom, upload, retake hints                                      | Main live feed is embedded in card chrome; insufficient hands-free capture; need better mobile ergonomics              |
+| Result            | Side-by-side photo and pose sample, Retake and Approve                                                | On mobile the comparison requires vertical scroll; static tips cannot imply AI assessment                              |
+| Library           | Local IndexedDB photos, view, download, delete, loading and empty states                              | No search/sort/style filtering; previous audit identifies account-isolation and fallback-consistency risks             |
+| Appearance & PWA  | 19 palettes, 9 font sets, install, offline shell                                                      | Too many expressive fonts/gradients can reduce consistency; enforce readable Vietnamese and accessibility tokens       |
 
 ## 2. External product references and transferable patterns
 

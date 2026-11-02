@@ -20,12 +20,14 @@
   border-color: var(--accent-strong);
   color: #fff;
   box-shadow: 0 5px 16px var(--px-status-shadow);
-  transition: filter .18s ease, box-shadow .18s ease;
+  transition:
+    filter 0.18s ease,
+    box-shadow 0.18s ease;
 }
 .install-app-btn:hover:not(:disabled) {
   background: var(--button-gradient);
   color: #fff;
-  filter: brightness(.91);
+  filter: brightness(0.91);
   box-shadow: 0 7px 19px var(--px-status-shadow);
 }
 .install-app-btn:focus-visible {
@@ -42,8 +44,12 @@
   box-shadow: 0 2px 8px var(--px-status-shadow);
 }
 .step.done,
-.step.active { color: var(--accent-strong); }
-.step-line { background: var(--px-status-border); }
+.step.active {
+  color: var(--accent-strong);
+}
+.step-line {
+  background: var(--px-status-border);
+}
 .step:not(.done):not(.active) .step-index {
   background: var(--surface);
   border-color: var(--px-status-border);
@@ -69,9 +75,15 @@
   color: #fff;
   border-color: var(--accent-strong);
 }
-.pwa-update-banner button:not(:last-child):hover { filter: brightness(.91); }
-.pwa-update-banner button:last-child { color: var(--accent); }
-.pwa-update-banner button:last-child:hover { background: var(--px-status-hover); }
+.pwa-update-banner button:not(:last-child):hover {
+  filter: brightness(0.91);
+}
+.pwa-update-banner button:last-child {
+  color: var(--accent);
+}
+.pwa-update-banner button:last-child:hover {
+  background: var(--px-status-hover);
+}
 
 /* Other informative notices, including offline and success feedback.
    Invalid fields/destructive actions retain their semantic error color. */
@@ -83,10 +95,18 @@
   border-color: var(--px-status-border);
   color: var(--accent-strong);
 }
-.network-status { border-style: solid; }
-.auth-feedback.success { border-style: solid; }
-.feedback-box strong { color: var(--accent-strong); }
+.network-status {
+  border-style: solid;
+}
+.auth-feedback.success {
+  border-style: solid;
+}
+.feedback-box strong {
+  color: var(--accent-strong);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .install-app-btn { transition: none; }
+  .install-app-btn {
+    transition: none;
+  }
 }

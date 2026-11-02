@@ -28,6 +28,7 @@ Nguồn tham khảo: `https://github.com/Yui-Okusora/tdtt-project.git` (thư m�
 Tùy chọn được lưu tại `localStorage`, không yêu cầu sửa HTML hay từng trang.
 
 Để tạo theme mới bằng mã nguồn:
+
 1. Chỉ cần mở `js/services/appearance.js`, thêm một phần tử vào `PALETTES` với `id`, `label`, `swatches`, `tokens`.
 2. Thêm bộ font mới trong cùng file tại `FONTS` bằng `body`, `heading`, `brand`.
 3. Nếu đó là một font chưa tải, thêm font tự host hoặc link font vào `index.html`.

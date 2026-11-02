@@ -21,6 +21,7 @@
    ```
 
    Trên macOS/Linux hoặc máy đã cài Python, dùng `python3 -m http.server 5500`.
+
 3. Mở trình duyệt tại **http://localhost:5500/**. **Không** mở qua `file://`, vì ES Module và service worker cần web server.
 4. Truy cập dưới dạng khách, hoặc dùng Login demo: username ≥3 ký tự, password ≥8 ký tự và ≥1 chữ in hoa. **Chưa có đăng nhập thật**.
 

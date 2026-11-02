@@ -21,6 +21,24 @@ export const QUICK_GUIDE = Object.freeze({
     3: "assets/guide/jojo-3.webp",
     4: "assets/guide/jojo-4.webp",
   }),
+  Sporty: Object.freeze({
+    1: "assets/guide/jojo-1.webp",
+    2: "assets/guide/jojo-2.webp",
+    3: "assets/guide/jojo-3.webp",
+    4: "assets/guide/jojo-4.webp",
+  }),
+  Funny: Object.freeze({
+    1: "assets/guide/jojo-1.webp",
+    2: "assets/guide/jojo-2.webp",
+    3: "assets/guide/jojo-3.webp",
+    4: "assets/guide/jojo-4.webp",
+  }),
+  Cool: Object.freeze({
+    1: "assets/guide/jojo-1.webp",
+    2: "assets/guide/jojo-2.webp",
+    3: "assets/guide/jojo-3.webp",
+    4: "assets/guide/jojo-4.webp",
+  }),
 });
 export function guidePhoto(style, people) {
   return QUICK_GUIDE[style]?.[Number(people)] ?? null;

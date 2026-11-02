@@ -5,87 +5,336 @@
    ============================================================ */
 
 /* [A] Logo / thương hiệu: chữ P từ assets/logo-p.svg vẫn chủ đạo. */
-.brand-name,.login-brand span{letter-spacing:-.6px}
+.brand-name,
+.login-brand span {
+  letter-spacing: -0.6px;
+}
 
 /* [B] Workspace drawer: ẩn mặc định, mở khi hover cạnh trái hoặc click nút.
    :focus-within giúp người dùng bàn phím mở được menu khi tab tới menu. */
-.workspace{display:block;padding-left:0}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;height:100dvh;z-index:90;
- transform:translateX(calc(-100% + 11px));box-shadow:none;
- transition:transform .22s ease,box-shadow .22s ease;overflow-y:auto;
- scrollbar-width:thin;visibility:visible}
-.sidebar:hover,.sidebar:focus-within,.workspace.sidebar-open .sidebar{transform:translateX(0);box-shadow:12px 0 40px #42152822}
-.sidebar:focus-within{outline:none}
-.sidebar-backdrop{position:fixed;inset:0;background:#24141f78;z-index:80}
-.sidebar-backdrop[hidden]{display:none!important}
-.sidebar-toggle{width:38px;height:38px;min-width:38px;display:grid;place-items:center;cursor:pointer;
- background:#fff3f5;color:#842343;border:1px solid #e8c9d3;border-radius:11px;
- font-size:19px;transition:background .15s ease}
-.sidebar-toggle:hover,.sidebar-toggle[aria-expanded="true"]{background:#f5dbe4}
-.sidebar-toggle:focus-visible{outline:3px solid #d17e9f;outline-offset:2px}
-.topbar{justify-content:flex-start;gap:15px}
-.top-actions{margin-left:auto}
+.workspace {
+  display: block;
+  padding-left: 0;
+}
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  height: 100dvh;
+  z-index: 90;
+  transform: translateX(calc(-100% + 11px));
+  box-shadow: none;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  visibility: visible;
+}
+.sidebar:hover,
+.sidebar:focus-within,
+.workspace.sidebar-open .sidebar {
+  transform: translateX(0);
+  box-shadow: 12px 0 40px #42152822;
+}
+.sidebar:focus-within {
+  outline: none;
+}
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #24141f78;
+  z-index: 80;
+}
+.sidebar-backdrop[hidden] {
+  display: none !important;
+}
+.sidebar-toggle {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: #fff3f5;
+  color: #842343;
+  border: 1px solid #e8c9d3;
+  border-radius: 11px;
+  font-size: 19px;
+  transition: background 0.15s ease;
+}
+.sidebar-toggle:hover,
+.sidebar-toggle[aria-expanded="true"] {
+  background: #f5dbe4;
+}
+.sidebar-toggle:focus-visible {
+  outline: 3px solid #d17e9f;
+  outline-offset: 2px;
+}
+.topbar {
+  justify-content: flex-start;
+  gap: 15px;
+}
+.top-actions {
+  margin-left: auto;
+}
 /* Khoá chức năng rõ ràng ngay trên các workspace chưa sẵn sàng. */
-.nav-item.nav-locked{opacity:.76}
+.nav-item.nav-locked {
+  opacity: 0.76;
+}
 
 /* [C] Home: không có launcher trong body; phần 02 là checklist hướng dẫn. */
-.quick-guide-list{list-style:none;padding:0;margin:0;display:grid;gap:11px}
-.quick-guide-list li{display:flex;gap:12px;align-items:flex-start;font-size:12px;line-height:1.7;
- background:#fff8f9;border:1px solid #f1e0e5;border-radius:12px;padding:11px 13px;color:#70515e}
-.quick-guide-list strong{color:#842343}
-.guide-step-icon{display:grid;place-items:center;flex:none;width:26px;height:26px;background:#f5d9e4;
- border-radius:50%;color:#832440;font-weight:800}
-.ready-tips{padding:9px 8px 15px;display:grid;gap:11px}
-.ready-tips p{margin:0;color:#785561;font-size:12px;line-height:1.8}
-.hero-monogram{width:215px;height:215px;display:grid;place-items:center;position:absolute;right:25px;top:0;
- font-weight:900;font-size:150px;color:#8c2044;line-height:1;border-radius:36px;
- background:linear-gradient(145deg,#ffeff4,#f1d5e1);transform:rotate(8deg);box-shadow:0 18px 35px #60203a25}
-.hero-monogram span{position:absolute;right:19px;top:21px;font-size:25px;color:#df7393}
+.quick-guide-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 11px;
+}
+.quick-guide-list li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 12px;
+  line-height: 1.7;
+  background: #fff8f9;
+  border: 1px solid #f1e0e5;
+  border-radius: 12px;
+  padding: 11px 13px;
+  color: #70515e;
+}
+.quick-guide-list strong {
+  color: #842343;
+}
+.guide-step-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  background: #f5d9e4;
+  border-radius: 50%;
+  color: #832440;
+  font-weight: 800;
+}
+.ready-tips {
+  padding: 9px 8px 15px;
+  display: grid;
+  gap: 11px;
+}
+.ready-tips p {
+  margin: 0;
+  color: #785561;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.hero-monogram {
+  width: 215px;
+  height: 215px;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  right: 25px;
+  top: 0;
+  font-weight: 900;
+  font-size: 150px;
+  color: #8c2044;
+  line-height: 1;
+  border-radius: 36px;
+  background: linear-gradient(145deg, #ffeff4, #f1d5e1);
+  transform: rotate(8deg);
+  box-shadow: 0 18px 35px #60203a25;
+}
+.hero-monogram span {
+  position: absolute;
+  right: 19px;
+  top: 21px;
+  font-size: 25px;
+  color: #df7393;
+}
 
 /* [D] Pose preview là ô NHỎ BÊN TRONG camera, không phải cột template. */
-.pose-camera-pip{position:absolute;right:17px;top:17px;z-index:5;width:clamp(125px,18vw,193px);
- background:#fffaf8;border:2px solid #ffffffdd;border-radius:14px;
- box-shadow:0 11px 30px #11080c75;overflow:hidden;padding:5px}
-.pose-camera-pip-art{width:100%;border-radius:9px;overflow:hidden}
-.pose-camera-pip .pose-illustration{width:100%;height:145px;display:block;border-radius:8px}
-.pose-camera-pip-title{display:block;text-align:center;font-size:11px;font-weight:800;color:#72233f;
- white-space:nowrap;text-overflow:ellipsis;overflow:hidden;padding:6px 22px 3px 5px}
-.pose-camera-pip-close{position:absolute;right:8px;bottom:6px;color:#852847;background:#f9e3ea;
- border:0;border-radius:50%;height:22px;width:22px;font-size:19px;line-height:1;cursor:pointer}
-.pose-camera-pip-close:focus-visible{outline:3px solid #d17e9f}
+.pose-camera-pip {
+  position: absolute;
+  right: 17px;
+  top: 17px;
+  z-index: 5;
+  width: clamp(125px, 18vw, 193px);
+  background: #fffaf8;
+  border: 2px solid #ffffffdd;
+  border-radius: 14px;
+  box-shadow: 0 11px 30px #11080c75;
+  overflow: hidden;
+  padding: 5px;
+}
+.pose-camera-pip-art {
+  width: 100%;
+  border-radius: 9px;
+  overflow: hidden;
+}
+.pose-camera-pip .pose-illustration {
+  width: 100%;
+  height: 145px;
+  display: block;
+  border-radius: 8px;
+}
+.pose-camera-pip-title {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #72233f;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 6px 22px 3px 5px;
+}
+.pose-camera-pip-close {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  color: #852847;
+  background: #f9e3ea;
+  border: 0;
+  border-radius: 50%;
+  height: 22px;
+  width: 22px;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+}
+.pose-camera-pip-close:focus-visible {
+  outline: 3px solid #d17e9f;
+}
 
 /* [E] Mobile: không còn bottom workspace bar; mở drawer bằng nút ☰. */
-@media(max-width:760px){
- .workspace{padding-bottom:env(safe-area-inset-bottom,0px)}
- .sidebar{top:0;bottom:0;width:min(84vw,300px);height:100dvh;
-  padding:25px 18px calc(25px + env(safe-area-inset-bottom,0px));
-  border-top:0;border-right:1px solid #ead8dc;display:flex;flex-direction:column;
-  transform:translateX(-102%);box-shadow:none}
- .sidebar:hover:not(:focus-within):not(.ignore-hover){transform:translateX(-102%)}
- .workspace.sidebar-open .sidebar,.sidebar:focus-within{transform:translateX(0)!important}
- .workspace-brand,.sidebar-label,.sidebar-bottom{display:flex}
- .workspace-brand{margin:2px 0 31px 8px}
- .sidebar-label{display:block}
- .main-nav{height:auto;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
- .nav-item{flex:none;width:100%;flex-direction:row;gap:14px;font-size:13px;justify-content:flex-start;
-  text-align:left;padding:13px 15px;white-space:normal}
- .nav-icon{font-size:23px}
- .sidebar-bottom{margin-top:auto;flex-direction:column}
- .sidebar-toggle{width:36px;height:36px;min-width:36px}
- .breadcrumb{gap:8px;min-width:0}.breadcrumb>span:first-child{display:none}.breadcrumb-slash{display:none}
- .main-content{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
- .toast{bottom:calc(18px + env(safe-area-inset-bottom,0px))}
- .pose-camera-pip{top:auto;bottom:123px;right:12px;width:min(37vw,158px);border-radius:11px;padding:4px}
- .pose-camera-pip .pose-illustration{height:105px}
- .pose-camera-pip-title{font-size:10px;padding:5px 20px 3px 2px}
- .pose-camera-pip-close{right:5px;bottom:4px}
- .hero-monogram{display:none}
+@media (max-width: 760px) {
+  .workspace {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .sidebar {
+    top: 0;
+    bottom: 0;
+    width: min(84vw, 300px);
+    height: 100dvh;
+    padding: 25px 18px calc(25px + env(safe-area-inset-bottom, 0px));
+    border-top: 0;
+    border-right: 1px solid #ead8dc;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-102%);
+    box-shadow: none;
+  }
+  .sidebar:hover:not(:focus-within):not(.ignore-hover) {
+    transform: translateX(-102%);
+  }
+  .workspace.sidebar-open .sidebar,
+  .sidebar:focus-within {
+    transform: translateX(0) !important;
+  }
+  .workspace-brand,
+  .sidebar-label,
+  .sidebar-bottom {
+    display: flex;
+  }
+  .workspace-brand {
+    margin: 2px 0 31px 8px;
+  }
+  .sidebar-label {
+    display: block;
+  }
+  .main-nav {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: flex-start;
+  }
+  .nav-item {
+    flex: none;
+    width: 100%;
+    flex-direction: row;
+    gap: 14px;
+    font-size: 13px;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 13px 15px;
+    white-space: normal;
+  }
+  .nav-icon {
+    font-size: 23px;
+  }
+  .sidebar-bottom {
+    margin-top: auto;
+    flex-direction: column;
+  }
+  .sidebar-toggle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+  .breadcrumb {
+    gap: 8px;
+    min-width: 0;
+  }
+  .breadcrumb > span:first-child {
+    display: none;
+  }
+  .breadcrumb-slash {
+    display: none;
+  }
+  .main-content {
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+  .toast {
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  }
+  .pose-camera-pip {
+    top: auto;
+    bottom: 123px;
+    right: 12px;
+    width: min(37vw, 158px);
+    border-radius: 11px;
+    padding: 4px;
+  }
+  .pose-camera-pip .pose-illustration {
+    height: 105px;
+  }
+  .pose-camera-pip-title {
+    font-size: 10px;
+    padding: 5px 20px 3px 2px;
+  }
+  .pose-camera-pip-close {
+    right: 5px;
+    bottom: 4px;
+  }
+  .hero-monogram {
+    display: none;
+  }
 }
-@media(min-width:761px){.sidebar-backdrop{background:#29131d40}}
-@media(prefers-reduced-motion:reduce){.sidebar{transition:none}}
+@media (min-width: 761px) {
+  .sidebar-backdrop {
+    background: #29131d40;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+}
 
 /* Nhãn phiên bản nhỏ trong workspace drawer. */
-.app-version{font-size:9px;color:#b86c87;letter-spacing:0;margin-left:7px}
+.app-version {
+  font-size: 9px;
+  color: #b86c87;
+  letter-spacing: 0;
+  margin-left: 7px;
+}
 
 /* Panel mẹo thay thế panel pose tham khảo cũ, giữ style của card bên phải. */
-.home-right .quick-tips-card{padding:14px;margin-bottom:20px}
+.home-right .quick-tips-card {
+  padding: 14px;
+  margin-bottom: 20px;
+}

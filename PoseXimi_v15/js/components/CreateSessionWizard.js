@@ -22,9 +22,12 @@ function peopleStep() {
 }
 function styleStep() {
   const styles = [
-    ["Casual", "Tự nhiên"],
-    ["Fashion", "Thời trang"],
-    ["JoJo", "Cá tính"],
+    ["Casual", ""],
+    ["Fashion", ""],
+    ["JoJo", ""],
+    ["Sporty", ""],
+    ["Funny", ""],
+    ["Cool", ""],
   ];
   return BaseCard({
     eyebrow: "02 / PHONG CÁCH",
@@ -54,10 +57,11 @@ function uploadTile(kind, label, hint, img) {
     state.inputFileValidated[kind],
   );
   const display = result.status !== "empty";
-  const icon =
-    ["valid", "technical"].includes(result.status) ? "checkbox"
-    : ["invalid", "unchecked"].includes(result.status) ? "camera-off"
-    : "cloud-upload";
+  const icon = ["valid", "technical"].includes(result.status)
+    ? "checkbox"
+    : ["invalid", "unchecked"].includes(result.status)
+      ? "camera-off"
+      : "cloud-upload";
   return `<section class="px-upload-tile px-demo-tile px-demo-${result.status}" aria-label="${safe(label)}">
     <div class="px-upload-art px-demo-photo-art">
       ${img ? `<img src="${img}" alt="Ảnh vừa tải lên: ${safe(label)}"/>` : `${iconMarkup("cloud-upload")}<span>JPG · PNG · WebP · ảnh thiết bị hỗ trợ</span>`}
@@ -69,7 +73,7 @@ function uploadTile(kind, label, hint, img) {
       <button type="button" data-action="camera-input" data-kind="${kind}">${iconMarkup("camera")}Chụp ảnh</button>
     </div>
     <div class="px-demo-result px-demo-result-${result.status}" role="status" aria-live="polite">
-      <div class="px-demo-result-heading">${iconMarkup(icon)}<strong>${safe(result.title)}</strong>${display ? `<span class="px-demo-label">${state.inputDemoScenario === "technical" ? "TỆP" : "DEMO"}</span>` : ""}</div>
+      <div class="px-demo-result-heading">${iconMarkup(icon)}<strong>${safe(result.title)}</strong>${display ? `<span class="px-demo-label">${state.inputDemoScenario === "technical" ? "" : ""}</span>` : ""}</div>
       <p>${safe(result.detail)}</p>
       ${result.instruction ? `<p class="px-demo-fix">${safe(result.instruction)}</p>` : ""}
     </div>
@@ -98,15 +102,15 @@ function uploadStep() {
   const missing = [bgResult, groupResult].filter(
     (result) => result.status === "empty",
   );
-  const message =
-    ready ?
-      state.inputDemoScenario === "technical" ?
-        "Hai tệp đã qua kiểm tra kỹ thuật; chưa xác thực nội dung ảnh."
-      : "Cả hai ảnh đang ở trạng thái hợp lệ (mô phỏng)."
-    : missing.length ? `Cần tải đủ 2 ảnh. Hiện còn thiếu ${missing.length} ảnh.`
-    : state.inputDemoScenario === "technical" ?
-      "Cần tải lại ảnh đã chọn trong chế độ demo để kiểm tra kỹ thuật."
-    : `Có ${invalid.length} ảnh không hợp lệ. Hãy xem hướng dẫn sửa bên dưới từng ảnh.`;
+  const message = ready
+    ? state.inputDemoScenario === "technical"
+      ? "Hai tệp đã qua kiểm tra kỹ thuật; chưa xác thực nội dung ảnh."
+      : "Cả hai ảnh đang ở trạng thái hợp lệ."
+    : missing.length
+      ? `Cần tải đủ 2 ảnh. Hiện còn thiếu ${missing.length} ảnh.`
+      : state.inputDemoScenario === "technical"
+        ? "Cần tải lại ảnh đã chọn trong chế độ demo để kiểm tra kỹ thuật."
+        : `Có ${invalid.length} ảnh không hợp lệ. Hãy xem hướng dẫn sửa bên dưới từng ảnh.`;
   return BaseCard({
     eyebrow: "03 / ẢNH ĐẦU VÀO",
     title: "Kiểm tra ảnh trước khi chọn pose",
@@ -115,7 +119,7 @@ function uploadStep() {
       <div class="px-upload-grid">${uploadTile("background", "Ảnh background", "Ảnh phông nền, không có người", state.backgroundPhoto)}
         ${uploadTile("group", "Ảnh của nhóm", `Ảnh toàn thân đủ ${state.people} người`, state.groupPhoto)}</div>
       <div class="px-demo-summary ${ready ? "is-valid" : ""}" role="status" aria-live="polite">${iconMarkup(ready ? "checkbox" : "sparkles")}<span>${safe(message)}</span></div>
-      <div class="px-upload-note">${iconMarkup("sparkles")}<span>${state.inputDemoScenario === "technical" ? "Chế độ thường: JPG/PNG/WebP/AVIF, tối đa 10 MB, cạnh ngắn tối thiểu 480px. Nội dung ảnh chưa được AI xác thực." : "MÔ PHỎNG: Kết quả kiểm tra được thiết lập trước để trình bày UX, không phải AI phân tích ảnh."}</span></div>
+      <div class="px-upload-note"><span>${state.inputDemoScenario === "technical" ? "Chế độ thường: JPG/PNG/WebP/AVIF, tối đa 10 MB, cạnh ngắn tối thiểu 480px. Nội dung ảnh chưa được AI xác thực." : ""}</span></div>
       <div class="px-stage-footer">${TextButton({ label: "Quay lại", action: "wizard-back" })}${PrimaryButton({ label: "Gợi ý tư thế", action: "request-suggestions", icon: "sparkles", disabled: !ready })}</div>
     `,
   });

@@ -25,7 +25,7 @@ export function evaluateDemoPhoto(
     return {
       status: "empty",
       title: "Chưa có ảnh",
-      detail: "Tải ảnh lên để hiển thị kết quả kiểm tra mô phỏng.",
+      detail: "Tải ảnh lên để tiếp tục tạo chọn pose",
       instruction: "",
     };
   }
@@ -52,7 +52,7 @@ export function evaluateDemoPhoto(
     return {
       status: "invalid",
       title: "Ảnh không hợp lệ",
-      detail: "Mô phỏng: ảnh background có người trong khung hình.",
+      detail: "Ảnh background có người trong khung hình.",
       instruction:
         "Cách sửa: sử dụng ảnh căn phòng hoặc phong cảnh trống, không có người.",
     };
@@ -61,22 +61,22 @@ export function evaluateDemoPhoto(
     return {
       status: "invalid",
       title: "Ảnh không hợp lệ",
-      detail: `Mô phỏng: ảnh nhóm chưa hiển thị trọn đầu đến bàn chân của đủ ${people} người.`,
+      detail: `Ảnh nhóm chưa hiển thị trọn đầu đến bàn chân của đủ ${people} người.`,
       instruction:
         "Cách sửa: lùi camera, chụp rõ toàn thân và đủ số người đã chọn.",
     };
   }
-  return kind === "background"
-    ? {
+  return kind === "background" ?
+      {
         status: "valid",
         title: "Ảnh hợp lệ",
-        detail: "Mô phỏng đạt: background không có người.",
+        detail: "Background không có người.",
         instruction: "Có thể tiếp tục.",
       }
     : {
         status: "valid",
         title: "Ảnh hợp lệ",
-        detail: `Mô phỏng đạt: ảnh thấy đầy đủ toàn thân ${people} người.`,
+        detail: `Ảnh thấy đầy đủ toàn thân ${people} người.`,
         instruction: "Có thể tiếp tục.",
       };
 }
@@ -103,7 +103,7 @@ export function areDemoPhotosValid(
     technicalChecks.group,
   ).status;
   return (
-    ["valid", "technical"].includes(bg) &&
-    ["valid", "technical"].includes(group)
+    ["valid", "technical"].includes(bg)
+    && ["valid", "technical"].includes(group)
   );
 }
