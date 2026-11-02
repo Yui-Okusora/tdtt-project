@@ -37,11 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-<<<<<<< HEAD
-          path: "./demo/PoseXimi_v6"
-=======
           path: './PoseXimi_v1.0'
->>>>>>> 300e4e6fec29aa1245cbada6c15c0d365dbc2ff6
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
