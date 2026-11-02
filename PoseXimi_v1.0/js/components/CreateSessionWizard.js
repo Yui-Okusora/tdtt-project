@@ -63,14 +63,23 @@ function uploadStep() {
  <div class="px-upload-note">${iconMarkup("sparkles")}<span>Ảnh tối đa 10 MB, cạnh ngắn từ 480px. Ảnh lớn được thu nhỏ tự động.</span></div>
  ${guide ? `<details class="px-guide-disclosure"><summary>${iconMarkup("eye-spark")} Xem ví dụ ${safe(state.style)} cho ${state.people} người</summary><img src="${guide}" alt="Hướng dẫn nhanh về tạo dáng nhóm" loading="lazy" /></details>` : ""}
  <div class="px-stage-footer">${TextButton({ label: "Quay lại", action: "wizard-back" })}${PrimaryButton({ label: "Gợi ý tư thế", action: "request-suggestions", icon: "sparkles", disabled: !inputsReady() })}</div>
- ${!inputsReady() ? `<p class="px-required-hint" role="status">${!state.backgroundPhoto && !state.groupPhoto ? "Vui lòng thêm hai ảnh để tiếp tục." : !state.backgroundPhoto ? "Còn thiếu ảnh background." : "Còn thiếu ảnh toàn thân của nhóm."}</p>` : ""}`,
+ ${
+   !inputsReady() ?
+     `<p class="px-required-hint" role="status">${
+       !state.backgroundPhoto && !state.groupPhoto ?
+         "Vui lòng thêm hai ảnh để tiếp tục."
+       : !state.backgroundPhoto ? "Còn thiếu ảnh background."
+       : "Còn thiếu ảnh toàn thân của nhóm."
+     }</p>`
+   : ""
+ }`,
   });
 }
 export function CreateSessionWizard() {
   const stage =
     [peopleStep, styleStep, uploadStep][state.wizardStep - 1] || peopleStep;
   return `<div class="px-home-page">
-  ${state.wizardStep === 1 ? `<div class="px-home-hero"><div><p class="px-kicker">WELCOME TO YOUR PHOTO STUDIO</p><h1>Chạm một chút.<br><em>Đẹp thật nhiều.</em></h1><p>PoseXimi giúp bạn tìm tư thế và ghi lại khoảnh khắc theo cách riêng.</p></div><div class="px-hero-visual"><img src="assets/poseximi-logo.png" alt=""/></div></div>` : ""}
+  ${state.wizardStep === 1 ? `<div class="px-home-hero"><div><p class="px-kicker">Chụp ngay không bay 5tr</p><h1>Pose bá đạo điểm nhấn tự tạo<br><em>Pose duyên dáng đáng bỏ công</em></h1></div></div>` : ""}
   <div class="px-wizard-shell"><div class="px-wizard-top"><div><span class="px-eyebrow">TẠO BUỔI CHỤP MỚI</span><h2>Mình bắt đầu nhé?</h2></div><span class="px-step-count">Bước ${state.wizardStep} / 3</span></div>
   ${stageProgress()}${stage()}</div>
  </div>`;
