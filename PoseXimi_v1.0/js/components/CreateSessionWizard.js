@@ -61,7 +61,6 @@ function uploadStep() {
  <div class="px-upload-grid">${uploadTile("background", "Ảnh background", "Không gian bạn muốn chụp", state.backgroundPhoto)}
  ${uploadTile("group", "Ảnh của nhóm", `Cần nhìn rõ toàn thân ${state.people} người`, state.groupPhoto)}</div>
  <div class="px-upload-note">${iconMarkup("sparkles")}<span>Ảnh tối đa 10 MB, cạnh ngắn từ 480px. Ảnh lớn được thu nhỏ tự động.</span></div>
- ${guide ? `<details class="px-guide-disclosure"><summary>${iconMarkup("eye-spark")} Xem ví dụ ${safe(state.style)} cho ${state.people} người</summary><img src="${guide}" alt="Hướng dẫn nhanh về tạo dáng nhóm" loading="lazy" /></details>` : ""}
  <div class="px-stage-footer">${TextButton({ label: "Quay lại", action: "wizard-back" })}${PrimaryButton({ label: "Gợi ý tư thế", action: "request-suggestions", icon: "sparkles", disabled: !inputsReady() })}</div>
  ${
    !inputsReady() ?
