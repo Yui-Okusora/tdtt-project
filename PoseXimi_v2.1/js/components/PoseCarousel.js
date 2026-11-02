@@ -21,7 +21,7 @@ export function PoseCarousel() {
        pose,
        i,
      ) => `<article class="px-carousel-card ${i === state.poseIndex ? "is-featured" : ""}" data-pose-index="${i}">
-  <button type="button" class="px-pose-photo" data-action="open-pose-detail" data-id="${safe(pose.id)}" aria-label="Mở xem lớn mẫu ${safe(pose.title)}">${poseSVG(state.people, pose.variant, state.background, state.style)}<span class="px-photo-expand">${iconMarkup("eye-spark")}Xem toàn màn hình</span></button>
+  <button type="button" class="px-pose-photo" data-action="open-pose-detail" data-id="${safe(pose.id)}" aria-label="Mở xem lớn mẫu ${safe(pose.title)}">${poseSVG(state.people, pose.variant, state.background, state.style)}</button>
   <div class="px-pose-footer"><span>POSE ${String(i + 1).padStart(2, "0")}</span><button type="button" class="px-outline-button" data-action="open-pose-detail" data-id="${safe(pose.id)}">Xem tư thế ${iconMarkup("arrow-badge-right")}</button></div></article>`,
    )
    .join("")}</div>
