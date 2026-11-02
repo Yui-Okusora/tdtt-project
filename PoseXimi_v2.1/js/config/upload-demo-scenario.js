@@ -12,4 +12,4 @@
  * CẢNH BÁO: Bốn chế độ không phải "technical" là kết quả demo đặt sẵn,
  * KHÔNG dùng để xác thực nội dung ảnh thật. Không triển khai như AI validation.
  */
-export const UPLOAD_DEMO_SCENARIO = "both-invalid";
+export const UPLOAD_DEMO_SCENARIO = "background-invalid";
